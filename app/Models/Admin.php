@@ -23,6 +23,7 @@ class Admin extends Model
 
     /**
      * Get the validations for the admin.
+     * test comment
      */
     public function validations()
     {

@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Rafflepick;
+use App\Models\RafflePick;
 use App\Models\Entry;
 use App\Models\Promo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Rafflepick>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\RafflePick>
  */
-class RafflepickFactory extends Factory
+class RafflePickFactory extends Factory
 {
-    protected $model = Rafflepick::class;
+    protected $model = RafflePick::class;
     /**
      * Define the model's default state.
      *

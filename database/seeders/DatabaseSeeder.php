@@ -9,7 +9,7 @@ use App\Models\Promo;
 use App\Models\Prize;
 use App\Models\Entry;
 use App\Models\Validation;
-use App\Models\Rafflepick;
+use App\Models\RafflePick;
 use App\Models\Faq;
 class DatabaseSeeder extends Seeder
 {
@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
         Validation::factory()->count(15)->create();
 
         // Create raffle picks, which require existing entries and promos
-        Rafflepick::factory()->count(10)->create();
+        RafflePick::factory()->count(10)->create();
 
         // Create FAQs, which require existing promos
         Faq::factory()->count(5)->create();
