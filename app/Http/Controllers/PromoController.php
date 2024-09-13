@@ -10,9 +10,18 @@ class PromoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10); // Default to 10 if not provided
+
+        // Search query with pagination
+        $promos = Promo::where('name', 'like', "%{$search}%")
+            ->orWhere('description', 'like', "%{$search}%")
+            ->paginate($perPage);
+
+        // Pass the search term and perPage to the view
+        return view('promos.index', compact('promos', 'search', 'perPage'));
     }
 
     /**
@@ -20,7 +29,7 @@ class PromoController extends Controller
      */
     public function create()
     {
-        //
+        return view('promos.create');
     }
 
     /**
@@ -28,7 +37,17 @@ class PromoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'terms_and_conditions' => 'required|string',
+        ]);
+
+        Promo::create($validatedData);
+
+        return redirect()->route('promos.index')->with('success', 'Promo created successfully.');
     }
 
     /**
@@ -36,7 +55,7 @@ class PromoController extends Controller
      */
     public function show(Promo $promo)
     {
-        //
+        return view('promos.show', compact('promo'));
     }
 
     /**
@@ -44,7 +63,7 @@ class PromoController extends Controller
      */
     public function edit(Promo $promo)
     {
-        //
+        return view('promos.edit', compact('promo'));
     }
 
     /**
@@ -52,7 +71,17 @@ class PromoController extends Controller
      */
     public function update(Request $request, Promo $promo)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'terms_and_conditions' => 'required|string',
+        ]);
+
+        $promo->update($validatedData);
+
+        return redirect()->route('promos.index')->with('success', 'Promo updated successfully.');
     }
 
     /**
@@ -60,6 +89,8 @@ class PromoController extends Controller
      */
     public function destroy(Promo $promo)
     {
-        //
+        $promo->delete();
+
+        return redirect()->route('promos.index')->with('success', 'Promo deleted successfully.');
     }
 }

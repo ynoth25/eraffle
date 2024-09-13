@@ -10,9 +10,16 @@ class AdminController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $perPage = $request->input('per_page', 10);
+        $search = $request->input('search', '');
+
+        $admins = Admin::where('name', 'like', "%{$search}%")
+            ->orWhere('email', 'like', "%{$search}%")
+            ->paginate($perPage);
+
+        return view('admins.index', compact('admins', 'search', 'perPage'));
     }
 
     /**
@@ -20,7 +27,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        return view('admins.create');
     }
 
     /**
@@ -28,7 +35,21 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:admins,email',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|string|max:255',
+        ]);
+
+        Admin::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => $request->role,
+        ]);
+
+        return redirect()->route('admins.index')->with('success', 'Admin created successfully.');
     }
 
     /**
@@ -36,7 +57,7 @@ class AdminController extends Controller
      */
     public function show(Admin $admin)
     {
-        //
+        return view('admins.show', compact('admin'));
     }
 
     /**
@@ -44,7 +65,7 @@ class AdminController extends Controller
      */
     public function edit(Admin $admin)
     {
-        //
+        return view('admins.edit', compact('admin'));
     }
 
     /**
@@ -52,7 +73,22 @@ class AdminController extends Controller
      */
     public function update(Request $request, Admin $admin)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:admins,email,' . $admin->id,
+            'password' => 'nullable|string|min:8|confirmed',
+            'role' => 'required|string|max:255',
+        ]);
+
+        $admin->name = $request->name;
+        $admin->email = $request->email;
+        if ($request->filled('password')) {
+            $admin->password = Hash::make($request->password);
+        }
+        $admin->role = $request->role;
+        $admin->save();
+
+        return redirect()->route('admins.index')->with('success', 'Admin updated successfully.');
     }
 
     /**
@@ -60,6 +96,7 @@ class AdminController extends Controller
      */
     public function destroy(Admin $admin)
     {
-        //
+        $admin->delete();
+        return redirect()->route('admins.index')->with('success', 'Admin deleted successfully.');
     }
 }
