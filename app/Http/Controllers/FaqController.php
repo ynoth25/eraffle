@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Faq;
+use App\Models\Promo;
 use Illuminate\Http\Request;
 
 class FaqController extends Controller
@@ -10,9 +11,16 @@ class FaqController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $perPage = $request->input('per_page', 10);
+        $search = $request->input('search', '');
+
+        $faqs = FAQ::where('question', 'like', "%{$search}%")
+            ->orWhere('answer', 'like', "%{$search}%")
+            ->paginate($perPage);
+
+        return view('faqs.index', compact('faqs', 'search', 'perPage'));
     }
 
     /**
@@ -20,7 +28,9 @@ class FaqController extends Controller
      */
     public function create()
     {
-        //
+        $promos = Promo::all();
+
+        return view('faqs.create', compact('promos'));
     }
 
     /**
@@ -28,7 +38,15 @@ class FaqController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'promo_id' => 'required|exists:promos,id',
+            'question' => 'required|string|max:255',
+            'answer' => 'required|string',
+        ]);
+
+        FAQ::create($request->all());
+
+        return redirect()->route('faqs.index')->with('success', 'FAQ created successfully.');
     }
 
     /**
@@ -36,7 +54,8 @@ class FaqController extends Controller
      */
     public function show(Faq $faq)
     {
-        //
+        $promo = $faq->promo();
+        return view('faqs.show', compact('faq', 'promo'));
     }
 
     /**
@@ -44,7 +63,7 @@ class FaqController extends Controller
      */
     public function edit(Faq $faq)
     {
-        //
+        return view('faqs.edit', compact('faq'));
     }
 
     /**
@@ -52,7 +71,15 @@ class FaqController extends Controller
      */
     public function update(Request $request, Faq $faq)
     {
-        //
+        $request->validate([
+            'promo_id' => 'required|exists:promos,id',
+            'question' => 'required|string|max:255',
+            'answer' => 'required|string',
+        ]);
+
+        $faq->update($request->all());
+
+        return redirect()->route('faqs.index')->with('success', 'FAQ updated successfully.');
     }
 
     /**
@@ -60,6 +87,8 @@ class FaqController extends Controller
      */
     public function destroy(Faq $faq)
     {
-        //
+        $faq->delete();
+
+        return redirect()->route('faqs.index')->with('success', 'FAQ deleted successfully.');
     }
 }

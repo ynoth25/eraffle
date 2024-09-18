@@ -10,9 +10,16 @@ class PrizeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10); // Default to 10 items per page
+
+        $prizes = Prize::where('name', 'like', "%{$search}%")
+            ->orWhere('description', 'like', "%{$search}%")
+            ->paginate($perPage);
+
+        return view('prizes.index', compact('prizes', 'search', 'perPage'));
     }
 
     /**
@@ -20,7 +27,7 @@ class PrizeController extends Controller
      */
     public function create()
     {
-        //
+        return view('prizes.create');
     }
 
     /**
@@ -28,7 +35,16 @@ class PrizeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'description' => 'nullable',
+            'value' => 'required|numeric',
+            'promo_id' => 'required|exists:promos,id',
+        ]);
+
+        Prize::create($validatedData);
+
+        return redirect()->route('prizes.index')->with('success', 'Prize created successfully.');
     }
 
     /**
@@ -36,7 +52,10 @@ class PrizeController extends Controller
      */
     public function show(Prize $prize)
     {
-        //
+        // Load the associated promo
+        $promo = $prize->promo; // Assuming a `promo` relationship in the Prize model
+
+        return view('prizes.show', compact('prize', 'promo'));
     }
 
     /**
@@ -44,7 +63,7 @@ class PrizeController extends Controller
      */
     public function edit(Prize $prize)
     {
-        //
+        return view('prizes.edit', compact('prize'));
     }
 
     /**
@@ -52,7 +71,16 @@ class PrizeController extends Controller
      */
     public function update(Request $request, Prize $prize)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'description' => 'nullable',
+            'value' => 'required|numeric',
+            'promo_id' => 'required|exists:promos,id',
+        ]);
+
+        $prize->update($validatedData);
+
+        return redirect()->route('prizes.index')->with('success', 'Prize updated successfully.');
     }
 
     /**
@@ -60,6 +88,8 @@ class PrizeController extends Controller
      */
     public function destroy(Prize $prize)
     {
-        //
+        $prize->delete();
+
+        return redirect()->route('prizes.index')->with('success', 'Prize deleted successfully.');
     }
 }
