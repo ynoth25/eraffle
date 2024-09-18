@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EntryController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PrizeController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\RafflePickController;
@@ -23,3 +24,4 @@ Route::resource('entries', EntryController::class);
 Route::resource('validations', ValidationController::class);
 Route::resource('raffle_picks', RafflePickController::class);
 Route::resource('admins', AdminController::class);
+Route::get('storage/{disk}/{filename}', [ImageController::class, 'show'])->name('storage.show');

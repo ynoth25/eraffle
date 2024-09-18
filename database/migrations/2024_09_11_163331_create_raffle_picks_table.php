@@ -13,23 +13,22 @@ return new class extends Migration
     {
         Schema::create('raffle_picks', function (Blueprint $table) {
             $table->id(); // Primary key, auto-incrementing
-            $table->unsignedBigInteger('promo_id'); // Foreign key for promos
-            $table->unsignedBigInteger('entry_id'); // Foreign key for entries
-            $table->date('pick_date'); // Date when the pick was made
-            $table->boolean('is_winner'); // Boolean indicating if the pick is a winner
+            $table->unsignedBigInteger('prize_id');
+            $table->unsignedBigInteger('entry_id');
+            $table->date('pick_date');
+            $table->boolean('is_winner')->default(true);
 
-            // Add foreign key constraints
-            $table->foreign('promo_id')
+            $table->foreign('prize_id')
                 ->references('id')
-                ->on('promos') // Table name in which `id` is the primary key
-                ->onDelete('cascade'); // Action when the related promo is deleted
+                ->on('prizes')
+                ->onDelete('cascade');
 
             $table->foreign('entry_id')
                 ->references('id')
-                ->on('entries') // Table name in which `id` is the primary key
-                ->onDelete('cascade'); // Action when the related entry is deleted
+                ->on('entries')
+                ->onDelete('cascade');
 
-            $table->timestamps(); // Created_at and Updated_at columns
+            $table->timestamps();
         });
     }
 

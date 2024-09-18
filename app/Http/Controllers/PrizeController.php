@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Prize;
 use Illuminate\Http\Request;
+use App\Imports\PrizeImport;
+use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class PrizeController extends Controller
 {
@@ -15,7 +19,7 @@ class PrizeController extends Controller
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10); // Default to 10 items per page
 
-        $prizes = Prize::where('name', 'like', "%{$search}%")
+        $prizes = Prize::where('code', 'like', "%{$search}%")
             ->orWhere('description', 'like', "%{$search}%")
             ->paginate($perPage);
 
@@ -35,14 +39,34 @@ class PrizeController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            'description' => 'nullable',
-            'value' => 'required|numeric',
-            'promo_id' => 'required|exists:promos,id',
+        // Validate the request, making the file optional
+        $validator = Validator::make($request->all(), [
+            'code' => 'required_without:file|unique:prizes,code|max:255',
+            'description' => 'required_without:file|max:255',
+            'file' => 'nullable|file|mimes:xlsx,csv',
         ]);
 
-        Prize::create($validatedData);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Check if a file is uploaded
+        if ($request->hasFile('file')) {
+            try {
+                // Import the file using the PrizeImport class
+                Excel::import(new PrizeImport, $request->file('file'));
+
+                return redirect()->back()->with('success', 'Data imported successfully');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'There was a problem with the import: ' . $e->getMessage());
+            }
+        }
+
+        // Create the prize record with the validated data
+        Prize::create([
+            'code' => $request->input('code'),
+            'description' => $request->input('description'),
+        ]);
 
         return redirect()->route('prizes.index')->with('success', 'Prize created successfully.');
     }
@@ -52,10 +76,7 @@ class PrizeController extends Controller
      */
     public function show(Prize $prize)
     {
-        // Load the associated promo
-        $promo = $prize->promo; // Assuming a `promo` relationship in the Prize model
-
-        return view('prizes.show', compact('prize', 'promo'));
+        return view('prizes.show', compact('prize'));
     }
 
     /**
@@ -72,10 +93,8 @@ class PrizeController extends Controller
     public function update(Request $request, Prize $prize)
     {
         $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            'description' => 'nullable',
-            'value' => 'required|numeric',
-            'promo_id' => 'required|exists:promos,id',
+            'code' => 'required|max:255',
+            'description' => 'required|max:255',
         ]);
 
         $prize->update($validatedData);

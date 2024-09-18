@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Entry;
+use App\Models\Prize;
 use App\Models\Promo;
 use App\Models\RafflePick;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class RafflePickController extends Controller
 {
@@ -17,11 +20,13 @@ class RafflePickController extends Controller
         $perPage = $request->input('per_page', 10);
         $search = $request->input('search', '');
 
-        $rafflePicks = RafflePick::whereHas('promo', function($query) use ($search) {
-            $query->where('name', 'like', "%{$search}%");
+        $rafflePicks = RafflePick::whereHas('prize', function($query) use ($search) {
+            $query->where('code', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
         })
             ->orWhereHas('entry', function($query) use ($search) {
-                $query->where('id', 'like', "%{$search}%");
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
             })
             ->paginate($perPage);
 
@@ -33,9 +38,9 @@ class RafflePickController extends Controller
      */
     public function create()
     {
-        $promos = Promo::all();
+        $prizes = Prize::all();
         $entries = Entry::all();
-        return view('raffle_picks.create', compact('promos', 'entries'));
+        return view('raffle_picks.create', compact('prizes', 'entries'));
     }
 
     /**
@@ -43,16 +48,48 @@ class RafflePickController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'promo_id' => 'required|exists:promos,id',
-            'entry_id' => 'required|exists:entries,id',
-            'pick_date' => 'required|date',
-            'is_winner' => 'required|boolean',
-        ]);
+        DB::beginTransaction(); // Start the transaction
 
-        RafflePick::create($request->all());
+        try {
+            // Find a random entry that has not been picked yet
+            $entry = Entry::where('status', '!=', 'picked')->inRandomOrder()->first();
+            if (!$entry) {
+                throw new \Exception('No available entry for this raffle.');
+            }
 
-        return redirect()->route('raffle_picks.index')->with('success', 'Raffle Pick created successfully.');
+            // Find a random prize that has not been picked yet
+            $prize = Prize::where('status', '!=', 'picked')->inRandomOrder()->first();
+            if (!$prize) {
+                throw new \Exception('No available prize for this raffle.');
+            }
+
+            // Update the entry and prize status to 'picked'
+            $entry->status = 'picked';
+            $entry->save();
+
+            $prize->status = 'picked';
+            $prize->save();
+
+            // Create a record for the raffle pick
+            RafflePick::create([
+                'entry_id' => $entry->id,
+                'prize_id' => $prize->id,
+                'pick_date' => now(),
+            ]);
+
+            DB::commit(); // Commit the transaction
+
+            // Redirect back to the raffle creation page with the picked entry and prize details
+            return redirect()->route('raffle_picks.create')->with([
+                'success' => 'Entry and prize have been picked successfully!',
+                'pickedEntry' => $entry,
+                'pickedPrize' => $prize,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback the transaction on error
+            Log::error('Raffle Pick failed: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'There was a problem with the raffle pick: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -80,15 +117,15 @@ class RafflePickController extends Controller
     public function update(Request $request, RafflePick $rafflePick)
     {
         $request->validate([
-            'promo_id' => 'required|exists:promos,id',
-            'entry_id' => 'required|exists:entries,id',
-            'pick_date' => 'required|date',
-            'is_winner' => 'required|boolean',
+            // Validate other fields if necessary
+            'is_winner' => 'nullable|boolean', // Checkbox value should be a boolean
         ]);
 
-        $rafflePick->update($request->all());
+        // Update the raffle record
+        $rafflePick->is_winner = $request->has('is_winner') ? true : false;
+        $rafflePick->save();
 
-        return redirect()->route('raffle_picks.index')->with('success', 'Raffle Pick updated successfully.');
+        return redirect()->route('raffle_picks.index')->with('success', 'Raffle updated successfully.');
     }
 
     /**
