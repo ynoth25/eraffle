@@ -26,8 +26,16 @@
                             <tbody>
                             @forelse($rafflePicks as $rafflePick)
                                 <tr>
-                                    <td>{{ $rafflePick->entry->name}}</td>
-                                    <td>{{ $rafflePick->prize->description}}</td>
+                                    <td>
+                                        <a href="{{ route('entries.show', ['entry' => $rafflePick->entry]) }}">
+                                            {{ $rafflePick->entry->name}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('prizes.show', ['prize' => $rafflePick->prize]) }}">
+                                            {{ $rafflePick->prize->description}}
+                                        </a>
+                                    </td>
                                     <td>{{ $rafflePick->is_winner == true ? 'true':'false'}}</td>
                                     <td>
                                         <a href="{{ route('raffle_picks.edit', ['raffle_pick' => $rafflePick->id]) }}">

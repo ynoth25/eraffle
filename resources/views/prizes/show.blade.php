@@ -1,19 +1,66 @@
-@extends('layouts.app')
+@extends('layouts.layout')
 
 @section('content')
-    <h1>Prize Details</h1>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">{{ __('Prize Details') }}</div>
 
-    <p><strong>Prize Name:</strong> {{ $prize->name }}</p>
-    <p><strong>Description:</strong> {{ $prize->description }}</p>
-    <p><strong>Value:</strong> {{ $prize->value }}</p>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <label for="code" class="col-md-4 col-form-label text-md-end">{{ __('Code') }}</label>
 
-    @if($promo)
-        <h2>Associated Promo</h2>
-        <p><strong>Promo Name:</strong> {{ $promo->name }}</p>
-        <p><strong>Description:</strong> {{ $promo->description }}</p>
-        <p><strong>Start Date:</strong> {{ $promo->start_date }}</p>
-        <p><strong>End Date:</strong> {{ $promo->end_date }}</p>
-    @else
-        <p>No associated promo found.</p>
-    @endif
+                            <div class="col-md-6">
+                                <p id="code" class="form-control-plaintext">{{ $prize->code }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('Description') }}</label>
+
+                            <div class="col-md-6">
+                                <p id="description" class="form-control-plaintext">{{ $prize->description }}</p>
+                            </div>
+                        </div>
+
+                        @if($prize->file)
+                            <div class="row mb-3">
+                                <label for="file" class="col-md-4 col-form-label text-md-end">{{ __('Uploaded File') }}</label>
+
+                                <div class="col-md-6">
+                                    <a href="{{ Storage::url($prize->file) }}" class="btn btn-primary" target="_blank">
+                                        {{ __('View File') }}
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        @if (session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+
+                        <div class="row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <a href="{{ route('prizes.edit', $prize->id) }}" class="btn btn-primary">
+                                    {{ __('Edit') }}
+                                </a>
+                                <a href="{{ url()->previous() }}" class="btn btn-secondary">
+                                    {{ __('Back') }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
