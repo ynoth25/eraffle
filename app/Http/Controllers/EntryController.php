@@ -6,6 +6,9 @@ use App\Models\Entry;
 use App\Models\Promo;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class EntryController extends Controller
 {
@@ -17,11 +20,12 @@ class EntryController extends Controller
         $perPage = $request->input('per_page', 10);
         $search = $request->input('search', '');
 
-        $entries = Entry::whereHas('promo', function($query) use ($search) {
-            $query->where('name', 'like', "%{$search}%");
-        })
-            ->orWhereHas('user', function($query) use ($search) {
-                $query->where('name', 'like', "%{$search}%");
+        $entries = Entry::query()
+            ->where(function($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%")
+                    ->orWhere('address', 'like', "%{$search}%");
             })
             ->paginate($perPage);
 
@@ -33,9 +37,7 @@ class EntryController extends Controller
      */
     public function create()
     {
-        $promos = Promo::all();
-        $users = User::all();
-        return view('entries.create', compact('promos', 'users'));
+        return view('entries.create');
     }
 
     /**
@@ -43,16 +45,38 @@ class EntryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'promo_id' => 'required|exists:promos,id',
-            'submission_date' => 'required|date',
-            'status' => 'required|string|max:255',
-        ]);
+        try {
+            // Validation
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'email' => 'nullable|email',
+                'phone' => 'nullable|required_without:email|string|max:255',
+                'address' => 'nullable|string|max:255',
+                'serial_number' => 'required|unique:entries,serial_number|exists:valid_sachets,serial_number|string|max:255',
+            ]);
 
-        Entry::create($request->all());
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
 
-        return redirect()->route('entries.index')->with('success', 'Entry created successfully.');
+            // Create entry
+            Entry::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'status' => 'pending',
+                'serial_number' => $request->serial_number,
+            ]);
+
+            return redirect()->route('submit-entry')->with('success', 'Entry submitted successfully!');
+        } catch (\Exception $e) {
+            // Log the error
+            Log::error('Entry submission failed: ' . $e->getMessage());
+
+            // Redirect with error message
+            return redirect()->back()->with('error', 'An error occurred while submitting the entry.');
+        }
     }
 
     /**
@@ -60,10 +84,7 @@ class EntryController extends Controller
      */
     public function show(Entry $entry)
     {
-        $promo = $entry->promo();
-        $user = $entry->user();
-
-        return view('entries.show', compact('entry', 'user', 'promo'));
+        return view('entries.show', compact('entry'));
     }
 
     /**
@@ -71,9 +92,7 @@ class EntryController extends Controller
      */
     public function edit(Entry $entry)
     {
-        $promos = Promo::all();
-        $users = User::all();
-        return view('entries.edit', compact('entry', 'promos', 'users'));
+        abort(403, 'We are currently not allowed to edit this entry.');
     }
 
     /**
@@ -81,16 +100,7 @@ class EntryController extends Controller
      */
     public function update(Request $request, Entry $entry)
     {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'promo_id' => 'required|exists:promos,id',
-            'submission_date' => 'required|date',
-            'status' => 'required|string|max:255',
-        ]);
-
-        $entry->update($request->all());
-
-        return redirect()->route('entries.index')->with('success', 'Entry updated successfully.');
+        abort(403, 'We are currently not allowed to update this entry.');
     }
 
     /**
@@ -98,7 +108,6 @@ class EntryController extends Controller
      */
     public function destroy(Entry $entry)
     {
-        $entry->delete();
-        return redirect()->route('entries.index')->with('success', 'Entry deleted successfully.');
+        abort(403, 'We are currently not allowed to delete this entry.');
     }
 }

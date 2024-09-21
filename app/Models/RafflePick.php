@@ -15,7 +15,7 @@ class RafflePick extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'promo_id',
+        'prize_id',
         'entry_id',
         'pick_date',
         'is_winner',
@@ -32,8 +32,8 @@ class RafflePick extends Model
     /**
      * Get the promo that owns the raffle pick.
      */
-    public function promo()
+    public function prize()
     {
-        return $this->belongsTo(Promo::class);
+        return $this->belongsTo(Prize::class);
     }
 }

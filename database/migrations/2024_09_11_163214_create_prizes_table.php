@@ -12,19 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('prizes', function (Blueprint $table) {
-            $table->id(); // Primary key, auto-incrementing
-            $table->string('name'); // Name field
-            $table->text('description')->nullable(); // Description field (nullable)
-            $table->string('value'); // Value field with decimal type
-            $table->unsignedBigInteger('promo_id'); // Foreign key column
-
-            // Add foreign key constraint
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('promo_id');
+            $table->string('code');
+            $table->text('description');
+            $table->integer('quantity')->nullable();
+            $table->string('status')->default('active');
+            $table->timestamps();
+            $table->softDeletes();
             $table->foreign('promo_id')
                 ->references('id')
-                ->on('promos') // Table name in which `id` is the primary key
-                ->onDelete('cascade'); // Action when the related promo is deleted
-
-            $table->timestamps(); // Created_at and Updated_at columns
+                ->on('promos');
         });
     }
 

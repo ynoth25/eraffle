@@ -41,7 +41,7 @@ class PromoController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
+            'end_date' => 'nullable|date|after:start_date',
             'terms_and_conditions' => 'required|string',
         ]);
 
@@ -75,13 +75,13 @@ class PromoController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
+            'end_date' => 'nullable|date|after:start_date',
             'terms_and_conditions' => 'required|string',
         ]);
 
         $promo->update($validatedData);
 
-        return redirect()->route('promos.index')->with('success', 'Promo updated successfully.');
+        return redirect()->route('promos.edit', $promo->id)->with('success', 'Promo updated successfully.');
     }
 
     /**

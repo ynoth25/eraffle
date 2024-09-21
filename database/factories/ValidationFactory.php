@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Promo;
 use App\Models\Validation;
-use App\Models\Entry;
-use App\Models\Admin;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,12 +20,10 @@ class ValidationFactory extends Factory
     public function definition(): array
     {
         return [
-            'entry_id' => Entry::factory(), // This creates a new entry
-            'validated_by' => Admin::factory(), // This creates a new admin
-            'validation_code' => $this->faker->word(),
-            'validation_status' => $this->faker->word(),
-            'comments' => $this->faker->text(),
-            'validation_date' => $this->faker->date(),
+            'promo_id' => Promo::factory(), // This creates a new entry
+            'serial_number' => $this->faker->word(),
+            'status' => $this->faker->word(),
+
         ];
     }
 }

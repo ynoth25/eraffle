@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
-use App\Models\Entry;
+use App\Imports\SerialNumberImport;
+use App\Models\Promo;
 use App\Models\Validation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ValidationController extends Controller
 {
@@ -17,25 +19,24 @@ class ValidationController extends Controller
         $perPage = $request->input('per_page', 10);
         $search = $request->input('search', '');
 
-        $validations = Validation::whereHas('entry', function($query) use ($search) {
-            $query->where('id', 'like', "%{$search}%");
-        })
-            ->orWhereHas('admin', function($query) use ($search) {
-                $query->where('name', 'like', "%{$search}%");
+        $promo = Promo::find($request->input('promo'));
+
+        $validations = $promo->serialNumbers()
+            ->where(function ($query) use ($search) {
+                $query->where('serial_number', 'like', "%{$search}%")
+                    ->orWhere('status', 'like', "%{$search}%");
             })
             ->paginate($perPage);
 
-        return view('validations.index', compact('validations', 'search', 'perPage'));
+        return view('validations.index', compact('validations', 'promo', 'search', 'perPage'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        $entries = Entry::all();
-        $admins = Admin::all(); // Changed to Admin model
-        return view('validations.create', compact('entries', 'admins'));
+        return view('validations.create', ['promo' => $request->query('promo')]);
     }
 
     /**
@@ -43,18 +44,37 @@ class ValidationController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'entry_id' => 'required|exists:entries,id',
-            'validated_by' => 'required|exists:admins,id', // Changed to Admin model
-            'validation_code' => 'required|string',
-            'validation_status' => 'required|string',
-            'comments' => 'nullable|string',
-            'validation_date' => 'required|date',
+        $promo = Promo::findOrFail($request->query('promo'));
+
+        $validator = Validator::make($request->all(), [
+            'serial_number' => 'required_without:file|unique:valid_sachets,serial_number|max:255',
+            'file' => 'nullable|file|mimes:xlsx,csv',
         ]);
 
-        Validation::create($request->all());
+        if ($validator->fails()) {
+            return redirect()->route('validations.create', compact('promo'))->withErrors($validator)->withInput();
+        }
 
-        return redirect()->route('validations.index')->with('success', 'Validation created successfully.');
+        // Check if a file is uploaded
+        if ($request->hasFile('file')) {
+            try {
+                // Import the file using the PrizeImport class
+                Excel::import(new SerialNumberImport($promo), $request->file('file'));
+
+                return redirect()->back()->with('success', 'Data imported successfully.');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'There was a problem with the import: ' . $e->getMessage());
+            }
+        }
+
+
+        Validation::create([
+            'promo_id' => $promo->id,
+            'serial_number' => $request->input('serial_number'),
+            'status' => 'active'
+        ]);
+
+        return redirect()->route('validations.create', compact('promo'))->with('success', 'Serial Number created successfully.');
     }
 
     /**
@@ -71,11 +91,10 @@ class ValidationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Validation $validation)
+    public function edit(Request $request, Validation $validation)
     {
-        $entries = Entry::all();
-        $admins = Admin::all(); // Changed to Admin model
-        return view('validations.edit', compact('validation', 'entries', 'admins'));
+        $promo = Promo::find($request->query('promo'));
+        return view('validations.edit', compact('validation', 'promo'));
     }
 
     /**
@@ -83,18 +102,22 @@ class ValidationController extends Controller
      */
     public function update(Request $request, Validation $validation)
     {
-        $request->validate([
-            'entry_id' => 'required|exists:entries,id',
-            'validated_by' => 'required|exists:admins,id', // Changed to Admin model
-            'validation_code' => 'required|string',
-            'validation_status' => 'required|string',
-            'comments' => 'nullable|string',
-            'validation_date' => 'required|date',
+        $promo = Promo::find($request->query('promo'));
+        $validator = Validator::make($request->all(), [
+            'serial_number' => 'required|unique:valid_sachets,serial_number|string|max:255',
+            'file' => 'nullable|file|mimes:xlsx,csv',
         ]);
 
-        $validation->update($request->all());
+        if ($validator->fails()) {
+            return redirect()->route('validations.edit', compact('validation','promo'))->withErrors($validator)->withInput();
+        }
 
-        return redirect()->route('validations.index')->with('success', 'Validation updated successfully.');
+        $validation->update([
+            'serial_number' => $request->input('serial_number'),
+            'status' => $request->input('status')
+        ]);
+
+        return redirect()->route('validations.edit', compact('validation','promo'))->with('success', 'Validation updated successfully.');
     }
 
     /**

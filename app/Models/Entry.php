@@ -15,11 +15,14 @@ class Entry extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
-        'promo_id',
-        'submission_date',
+        'name',
+        'email',
+        'phone',
+        'address',
         'status',
+        'serial_number',
     ];
+
 
     /**
      * Get the user that owns the entry.

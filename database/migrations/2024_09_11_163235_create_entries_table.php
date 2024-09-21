@@ -12,24 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('entries', function (Blueprint $table) {
-            $table->id(); // Primary key, auto-incrementing
-            $table->unsignedBigInteger('user_id'); // Foreign key for users
-            $table->unsignedBigInteger('promo_id'); // Foreign key for promos
-            $table->date('submission_date'); // Date of submission
-            $table->string('status'); // Status of the entry
-
-            // Add foreign key constraints
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users') // Table name in which `id` is the primary key
-                ->onDelete('cascade'); // Action when the related user is deleted
-
-            $table->foreign('promo_id')
-                ->references('id')
-                ->on('promos') // Table name in which `id` is the primary key
-                ->onDelete('cascade'); // Action when the related promo is deleted
-
-            $table->timestamps(); // Created_at and Updated_at columns
+            $table->bigIncrements('id'); // Use bigIncrements for a big integer primary key
+            $table->string('name');
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
+            $table->text('address')->nullable();
+            $table->string('status')->default('pending');
+            $table->string('serial_number');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

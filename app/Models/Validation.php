@@ -9,34 +9,23 @@ class Validation extends Model
 {
     use HasFactory;
 
+    protected $table = 'valid_sachets';
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'entry_id',
-        'validated_by',
-        'validation_code',
-        'validation_status',
-        'comments',
-        'validation_date',
+        'serial_number',
+        'status',
+        'promo_id',
     ];
 
-
     /**
-     * Get the entry that owns the validation.
+     * Promo relationship
      */
-    public function entry()
+    public function promo()
     {
-        return $this->belongsTo(Entry::class);
-    }
-
-    /**
-     * Get the admin that validated the entry.
-     */
-    public function admin()
-    {
-        return $this->belongsTo(Admin::class, 'validated_by');
+        return $this->belongsTo(promo::class);
     }
 }

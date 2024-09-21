@@ -6,6 +6,7 @@ use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use PHPUnit\Framework\Attributes\BeforeClass;
 use Illuminate\Support\Facades\Log;
@@ -24,6 +25,16 @@ abstract class DuskTestCase extends BaseTestCase
 
         // Set up the database for Dusk
         $this->artisan('migrate');
+
+        DB::beginTransaction();
+    }
+
+    protected function tearDown(): void
+    {
+        // Rollback the transaction
+        DB::rollBack();
+
+        parent::tearDown();
     }
 
     /**
