@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Prize;
+use App\Models\Promo;
 use Illuminate\Http\Request;
 use App\Imports\PrizeImport;
 use Illuminate\Support\Facades\Validator;
@@ -18,20 +19,24 @@ class PrizeController extends Controller
     {
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10); // Default to 10 items per page
+        $promo = Promo::find($request->input('promo'));
 
-        $prizes = Prize::where('code', 'like', "%{$search}%")
-            ->orWhere('description', 'like', "%{$search}%")
+        $prizes = $promo->prizes()
+            ->where(function ($query) use ($search) {
+                $query->where('code', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            })
             ->paginate($perPage);
 
-        return view('prizes.index', compact('prizes', 'search', 'perPage'));
+        return view('prizes.index', compact('prizes', 'promo', 'search', 'perPage'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('prizes.create');
+        return view('prizes.create', ['promo' => $request->query('promo')]);
     }
 
     /**
@@ -39,36 +44,39 @@ class PrizeController extends Controller
      */
     public function store(Request $request)
     {
+        $promo = Promo::findOrFail($request->query('promo'));
+
         // Validate the request, making the file optional
         $validator = Validator::make($request->all(), [
             'code' => 'required_without:file|unique:prizes,code|max:255',
             'description' => 'required_without:file|max:255',
+            'quantity' => 'nullable|numeric',
             'file' => 'nullable|file|mimes:xlsx,csv',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()->route('prizes.create', compact('promo'))->withErrors($validator)->withInput();
         }
 
         // Check if a file is uploaded
         if ($request->hasFile('file')) {
             try {
                 // Import the file using the PrizeImport class
-                Excel::import(new PrizeImport, $request->file('file'));
+                Excel::import(new PrizeImport($promo), $request->file('file'));
 
-                return redirect()->back()->with('success', 'Data imported successfully');
+                return redirect()->back()->with('success', 'Data imported successfully.');
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', 'There was a problem with the import: ' . $e->getMessage());
             }
         }
 
-        // Create the prize record with the validated data
-        Prize::create([
+        $promo->prizes()->create([
             'code' => $request->input('code'),
             'description' => $request->input('description'),
+            'status' => 'active',
         ]);
 
-        return redirect()->route('prizes.index')->with('success', 'Prize created successfully.');
+        return redirect()->route('prizes.create', compact('promo'))->with('success', 'Prize created successfully.');
     }
 
     /**
@@ -82,9 +90,10 @@ class PrizeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Prize $prize)
+    public function edit(Request $request, Prize $prize)
     {
-        return view('prizes.edit', compact('prize'));
+        $promo = Promo::find($request->query('promo'));
+        return view('prizes.edit', compact('prize', 'promo'));
     }
 
     /**
@@ -92,14 +101,18 @@ class PrizeController extends Controller
      */
     public function update(Request $request, Prize $prize)
     {
+        $promo = Promo::findOrFail($request->query('promo'));
+
         $validatedData = $request->validate([
             'code' => 'required|max:255',
             'description' => 'required|max:255',
+            'quantity' => 'nullable|numeric|max:255',
+            'status' => 'required|max:255',
         ]);
 
         $prize->update($validatedData);
 
-        return redirect()->route('prizes.index')->with('success', 'Prize updated successfully.');
+            return redirect()->route('prizes.edit', compact('prize', 'promo'))->with('success', 'Prize updated successfully.');
     }
 
     /**

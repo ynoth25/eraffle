@@ -13,14 +13,24 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-
+                            <div class="text-end mb-3">
+                                <a href="{{ route('promos.index')}}" class="btn btn-secondary">
+                                    {{ __('Back to Promo List') }}
+                                </a>
+                            </div>
                         <table class="table">
                             <thead>
                             <tr>
                                 <th>Code</th>
                                 <th>Description</th>
                                 <th>Status</th>
-                                <th></th>
+                                <th>
+                                    <div class="">
+                                        <a href="{{ route('prizes.create', compact('promo'))}}" >
+                                            {{ __('Create Prize') }}
+                                        </a>
+                                    </div>
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -30,7 +40,7 @@
                                     <td>{{ $prize->description}}</td>
                                     <td>{{ $prize->status}}</td>
                                     <td>
-                                        <a href="{{ route('prizes.edit', ['prize' => $prize->id]) }}">
+                                        <a href="{{ route('prizes.edit', compact('prize', 'promo')) }}">
                                             Edit
                                         </a>
                                     </td>

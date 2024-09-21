@@ -21,6 +21,7 @@
                                     <th>Email</th>
                                     <th>Phone</th>
                                     <th>Address</th>
+                                    <th>Serial Number</th>
                                     <th>Status</th>
                                     <th></th>
                                 </tr>
@@ -32,6 +33,7 @@
                                         <td>{{ $entry->email}}</td>
                                         <td>{{ $entry->phone}}</td>
                                         <td>{{ $entry->address}}</td>
+                                        <td>{{ $entry->serial_number}}</td>
                                         <td>{{ $entry->status}}</td>
                                         <td>
                                             <a href="{{ route('entries.show', ['entry' => $entry->id]) }}">

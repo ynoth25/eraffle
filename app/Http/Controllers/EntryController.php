@@ -51,23 +51,13 @@ class EntryController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'nullable|email',
                 'phone' => 'nullable|required_without:email|string|max:255',
-                'address' => 'required|string|max:255',
-                'sachet_front_image' => 'required|image',
-                'sachet_back_image' => 'required|image',
-                'id_front_image' => 'required|image',
-                'id_back_image' => 'required|image',
+                'address' => 'nullable|string|max:255',
+                'serial_number' => 'required|unique:entries,serial_number|exists:valid_sachets,serial_number|string|max:255',
             ]);
 
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
-
-
-            // File upload handling
-            $sachetFrontImagePath = $request->file('sachet_front_image')->store('sachets');
-            $sachetBackImagePath = $request->file('sachet_back_image')->store('sachets');
-            $idFrontImagePath = $request->file('id_front_image')->store('ids');
-            $idBackImagePath = $request->file('id_back_image')->store('ids');
 
             // Create entry
             Entry::create([
@@ -75,14 +65,11 @@ class EntryController extends Controller
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'address' => $request->address,
-                'sachet_front_image' => $sachetFrontImagePath,
-                'sachet_back_image' => $sachetBackImagePath,
-                'id_front_image' => $idFrontImagePath,
-                'id_back_image' => $idBackImagePath,
                 'status' => 'pending',
+                'serial_number' => $request->serial_number,
             ]);
 
-            return redirect()->route('entries.create')->with('success', 'Entry submitted successfully!');
+            return redirect()->route('submit-entry')->with('success', 'Entry submitted successfully!');
         } catch (\Exception $e) {
             // Log the error
             Log::error('Entry submission failed: ' . $e->getMessage());
@@ -105,9 +92,7 @@ class EntryController extends Controller
      */
     public function edit(Entry $entry)
     {
-        $promos = Promo::all();
-        $users = User::all();
-        return view('entries.edit', compact('entry', 'promos', 'users'));
+        abort(403, 'We are currently not allowed to edit this entry.');
     }
 
     /**
@@ -115,16 +100,7 @@ class EntryController extends Controller
      */
     public function update(Request $request, Entry $entry)
     {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'promo_id' => 'required|exists:promos,id',
-            'submission_date' => 'required|date',
-            'status' => 'required|string|max:255',
-        ]);
-
-        $entry->update($request->all());
-
-        return redirect()->route('entries.index')->with('success', 'Entry updated successfully.');
+        abort(403, 'We are currently not allowed to update this entry.');
     }
 
     /**
@@ -132,7 +108,6 @@ class EntryController extends Controller
      */
     public function destroy(Entry $entry)
     {
-        $entry->delete();
-        return redirect()->route('entries.index')->with('success', 'Entry deleted successfully.');
+        abort(403, 'We are currently not allowed to delete this entry.');
     }
 }

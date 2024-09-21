@@ -2,13 +2,12 @@
 
 namespace App\Imports;
 
-use App\Models\Prize;
+use App\Models\Validation;
 use App\Models\Promo;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
 
-class PrizeImport implements ToModel
+class SerialNumberImport implements ToModel
 {
     protected $promo;
 
@@ -21,14 +20,13 @@ class PrizeImport implements ToModel
     /**
      * @param array $row
      *
-     * @return Prize|null
+     * @return Validation|null
      */
     public function model(array $row)
     {
-        return new Prize([
+        return new Validation([
             'promo_id' => $this->promo->id,
-            'code'     => $row[0],
-            'description'    => $row[1],
+            'serial_number'     => $row[0],
             'status'    => 'active',
         ]);
     }
@@ -39,7 +37,7 @@ class PrizeImport implements ToModel
             '*.0' => [
                 'required',
                 'max:255',
-                Rule::unique('prizes', 'code'), // Ensure the code is unique in the 'prizes' table
+                Rule::unique('valid_sachets', 'serial_number'), // Ensure the code is unique in the 'prizes' table
             ],
             '*.1' => 'nullable|max:255', // Validate description if present
         ];

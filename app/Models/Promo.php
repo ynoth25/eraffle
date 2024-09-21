@@ -45,4 +45,20 @@ class Promo extends Model
     {
         return $this->hasMany(Entry::class);
     }
+
+    /**
+     * Get the entries for the promo.
+     */
+    public function serialNumbers()
+    {
+        return $this->hasMany(Validation::class);
+    }
+
+    /**
+     * Get the entries for the promo.
+     */
+    public function rafflePicks()
+    {
+        return $this->hasMany(RafflePick::class);
+    }
 }

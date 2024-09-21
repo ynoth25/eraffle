@@ -1,4 +1,3 @@
-<!-- resources/views/prizes/edit.blade.php -->
 @extends('layouts.layout')
 
 @section('content')
@@ -6,19 +5,19 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Raffle Draw') }}</div>
+                    <div class="card-header">{{ __('Edit Promo') }}</div>
 
                     <div class="card-body">
-                        <form action="{{ route('raffle_picks.update', $rafflePick->id) }}" method="POST">
+                        <form method="POST" action="{{ route('promos.update', $promo->id) }}">
                             @csrf
                             @method('PUT')
                             <div class="row mb-3">
-                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Entry') }}</label>
+                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="entry" type="text" class="form-control @error('entry') is-invalid @enderror" name="entry" value="{{ $rafflePick->entry->name ?? '' }}" readonly>
+                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $promo->name ?? '') }}">
 
-                                    @error('entry')
+                                    @error('name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -27,12 +26,12 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Prize') }}</label>
+                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Description') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="prize" type="text" class="form-control @error('prize') is-invalid @enderror" name="prize" value="{{ $rafflePick->prize->description ?? '' }}" readonly>
+                                    <input id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" value="{{ old('description', $promo->description ?? '') }}">
 
-                                    @error('prize')
+                                    @error('description')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -41,25 +40,40 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Picked Date') }}</label>
+                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Start Date') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="pick_date" type="text" class="form-control @error('pick_date') is-invalid @enderror" name="pick_date" value="{{ $rafflePick->pick_date ?? '' }}" readonly>
+                                    <input id="start_date" type="text" class="form-control @error('start_date') is-invalid @enderror" name="start_date" value="{{ old('start_date', $promo->start_date ?? '') }}">
 
-                                    @error('pick_date')
+                                    @error('start_date')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
                                 </div>
                             </div>
+
                             <div class="row mb-3">
-                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Has User Won?') }}</label>
+                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('End Date') }}</label>
 
                                 <div class="col-md-6">
-                                    <input type="checkbox" id="is_winner" name="is_winner" value="1" {{ $rafflePick->is_winner ? 'checked' : '' }}>
+                                    <input id="end_date" type="text" class="form-control @error('end_date') is-invalid @enderror" name="end_date" value="{{ old('end_date', $promo->end_date ?? '') }}">
 
-                                    @error('pick_date')
+                                    @error('end_date')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Terms & Conditions') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="terms_and_conditions" type="text" class="form-control @error('terms_and_conditions') is-invalid @enderror" name="terms_and_conditions" value="{{ old('terms_and_conditions', $promo->terms_and_conditions ?? '') }}">
+
+                                    @error('terms_and_conditions')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -82,16 +96,17 @@
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
-                                        {{ __('Save') }}
+                                        {{ __('Submit') }}
                                     </button>
                                 </div>
-                                <div class="col-md-6 offset-md-4">
-                                    <a href="{{ route('raffle_picks.index', compact('promo')) }}">
-                                        Back to list
-                                    </a>
-                                </div>
+                            </div>
+                            <div class="text-end mb-2">
+                                <a href="{{ route('promos.index')}}" class="btn btn-secondary">
+                                    {{ __('Back to Promo List') }}
+                                </a>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>

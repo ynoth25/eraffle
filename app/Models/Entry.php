@@ -20,10 +20,7 @@ class Entry extends Model
         'phone',
         'address',
         'status',
-        'sachet_front_image',
-        'sachet_back_image',
-        'id_front_image',
-        'id_back_image',
+        'serial_number',
     ];
 
 

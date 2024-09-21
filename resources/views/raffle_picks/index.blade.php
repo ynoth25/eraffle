@@ -13,7 +13,11 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-
+                        <div class="text-end mb-3">
+                            <a href="{{ route('raffle_picks.create', compact('promo'))}}" class="btn btn-success">
+                                {{ __('Raffle Draw') }}
+                            </a>
+                        </div>
                         <table class="table">
                             <thead>
                             <tr>
@@ -38,7 +42,7 @@
                                     </td>
                                     <td>{{ $rafflePick->is_winner == true ? 'true':'false'}}</td>
                                     <td>
-                                        <a href="{{ route('raffle_picks.edit', ['raffle_pick' => $rafflePick->id]) }}">
+                                        <a href="{{ route('raffle_picks.edit', ['raffle_pick' => $rafflePick->id, 'promo' => $promo]) }}">
                                             Edit
                                         </a>
                                     </td>
@@ -50,11 +54,12 @@
                             @endforelse
                             </tbody>
                         </table>
-                            <div class="col-md-6 offset-md-4">
-                                <a href="{{ route('raffle_picks.create') }}">
-                                    Back to draw
-                                </a>
-                            </div>
+                        <br />
+                        <div class="text-left mt-3">
+                            <a href="{{ route('promos.index')}}" class="btn btn-secondary">
+                                {{ __('Back to Promo List') }}
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

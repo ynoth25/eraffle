@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('promos', function (Blueprint $table) {
-            $table->id(); // Primary key
-            $table->string('name'); // Name field
-            $table->text('description')->nullable(); // Description field
-            $table->date('start_date'); // Start date field
-            $table->date('end_date'); // End date field
-            $table->text('terms_and_conditions')->nullable(); // Terms and conditions field
-            $table->timestamps(); // Created_at and Updated_at columns
+            $table->id();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
+            $table->text('terms_and_conditions')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

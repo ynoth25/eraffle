@@ -8,7 +8,7 @@
                     <div class="card-header">{{ __('Edit prize') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('prizes.update', $prize->id) }}">
+                        <form method="POST" action="{{ route('prizes.update', compact('prize', 'promo')) }}">
                             @csrf
                             @method('PUT')
 
@@ -33,6 +33,20 @@
                                     <input id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" value="{{ old('description', $prize->description ?? '') }}">
 
                                     @error('description')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Quantity') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="quantity" type="text" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity', $prize->quantity ?? '') }}">
+
+                                    @error('quantity')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -72,6 +86,11 @@
                                         {{ __('Submit') }}
                                     </button>
                                 </div>
+                            </div>
+                            <div class="text-end mb-2">
+                                <a href="{{ route('prizes.index', compact('promo'))}}" class="btn btn-secondary">
+                                    {{ __('Back to Prize List') }}
+                                </a>
                             </div>
                         </form>
                     </div>

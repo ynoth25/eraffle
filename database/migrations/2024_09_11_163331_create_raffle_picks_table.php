@@ -12,11 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('raffle_picks', function (Blueprint $table) {
-            $table->id(); // Primary key, auto-incrementing
+            $table->bigIncrements('id'); // Primary key, auto-incrementing
             $table->unsignedBigInteger('prize_id');
             $table->unsignedBigInteger('entry_id');
             $table->date('pick_date');
             $table->boolean('is_winner')->default(true);
+            $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('prize_id')
                 ->references('id')
@@ -27,8 +29,6 @@ return new class extends Migration
                 ->references('id')
                 ->on('entries')
                 ->onDelete('cascade');
-
-            $table->timestamps();
         });
     }
 

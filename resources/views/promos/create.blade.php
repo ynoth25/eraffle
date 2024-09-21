@@ -5,19 +5,19 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Create prize') }}</div>
+                    <div class="card-header">{{ __('Create promos') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('prizes.store', compact('promo')) }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('promos.store') }}" enctype="multipart/form-data">
                             @csrf
 
                             <div class="row mb-3">
-                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Code') }}</label>
+                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="code" type="text" class="form-control @error('code') is-invalid @enderror" name="code" value="{{ old('code') }}">
+                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $promo->name ?? '') }}">
 
-                                    @error('code')
+                                    @error('name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -29,7 +29,7 @@
                                 <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Description') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" value="{{ old('description') }}">
+                                    <input id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" value="{{ old('description', $promo->description ?? '') }}">
 
                                     @error('description')
                                     <span class="invalid-feedback" role="alert">
@@ -38,13 +38,14 @@
                                     @enderror
                                 </div>
                             </div>
+
                             <div class="row mb-3">
-                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Quantity') }}</label>
+                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Start Date') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="quantity" type="number" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity', $prize->quantity ?? '') }}">
+                                    <input id="start_date" type="text" class="form-control @error('start_date') is-invalid @enderror" name="start_date" value="{{ old('start_date', $promo->start_date ?? '') }}">
 
-                                    @error('quantity')
+                                    @error('start_date')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -53,11 +54,26 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="file" class="col-md-4 col-form-label text-md-end">{{ __('Upload (Optional)') }}</label>
+                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('End Date') }}</label>
 
                                 <div class="col-md-6">
-                                    <input type="file" name="file" id="file" class="form-control @error('file') is-invalid @enderror">
-                                    @error('file')
+                                    <input id="end_date" type="text" class="form-control @error('end_date') is-invalid @enderror" name="end_date" value="{{ old('end_date', $promo->end_date ?? '') }}">
+
+                                    @error('end_date')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Terms & Conditions') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="terms_and_conditions" type="text" class="form-control @error('terms_and_conditions') is-invalid @enderror" name="terms_and_conditions" value="{{ old('terms_and_conditions', $promo->terms_and_conditions ?? '') }}">
+
+                                    @error('terms_and_conditions')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -85,8 +101,8 @@
                                 </div>
                             </div>
                             <div class="text-end mb-2">
-                                <a href="{{ route('prizes.index', compact('promo'))}}" class="btn btn-secondary">
-                                    {{ __('Back to Prize List') }}
+                                <a href="{{ route('promos.index')}}" class="btn btn-secondary">
+                                    {{ __('Back to Promo List') }}
                                 </a>
                             </div>
                         </form>

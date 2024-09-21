@@ -68,12 +68,12 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="sachet_front_image" class="col-md-4 col-form-label text-md-end">{{ __('Sachet Front Image') }}</label>
+                                <label for="address" class="col-md-4 col-form-label text-md-end">{{ __('Sachet Serial Number') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="sachet_front_image" type="file" class="form-control @error('sachet_front_image') is-invalid @enderror" name="sachet_front_image">
+                                    <input id="serial_number" type="text" class="form-control @error('serial_number') is-invalid @enderror" name="serial_number" value="{{ old('serial_number') }}">
 
-                                    @error('sachet_front_image')
+                                    @error('serial_number')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -81,47 +81,6 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-3">
-                                <label for="sachet_back_image" class="col-md-4 col-form-label text-md-end">{{ __('Sachet Back Image') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="sachet_back_image" type="file" class="form-control @error('sachet_back_image') is-invalid @enderror" name="sachet_back_image">
-
-                                    @error('sachet_back_image')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="id_front_image" class="col-md-4 col-form-label text-md-end">{{ __('ID Front Image') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="id_front_image" type="file" class="form-control @error('id_front_image') is-invalid @enderror" name="id_front_image">
-
-                                    @error('id_front_image')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="id_back_image" class="col-md-4 col-form-label text-md-end">{{ __('ID Back Image') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="id_back_image" type="file" class="form-control @error('id_back_image') is-invalid @enderror" name="id_back_image">
-
-                                    @error('id_back_image')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
 
                             @if (session('success'))
                                 <div class="alert alert-success">
@@ -137,7 +96,7 @@
 
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button id="submit-button" type="submit" class="btn btn-primary">
                                         {{ __('Submit') }}
                                     </button>
                                 </div>

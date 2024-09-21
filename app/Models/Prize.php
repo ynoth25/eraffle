@@ -17,6 +17,7 @@ class Prize extends Model
     protected $fillable = [
         'code',
         'description',
+        'promo_id',
         'status'
     ];
 
