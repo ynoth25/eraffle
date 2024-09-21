@@ -35,9 +35,11 @@ class EntryController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('entries.create');
+        $promo = Promo::where('end_date', NULL)->latest()->first();
+
+        return view('entries.create', compact('promo'));
     }
 
     /**
