@@ -151,7 +151,7 @@ class RafflePickController extends Controller
         $rafflePick->is_winner = $request->has('is_winner') ? true : false;
         $rafflePick->save();
 
-        return redirect()->route('raffle_picks.edit', ['rafflePick' => $rafflePick->id, 'promo' => $promo->id])->with('success', 'Raffle updated successfully.');
+        return redirect()->route('raffle_picks.edit', ['raffle_pick' => $rafflePick->id, 'promo' => $promo->id])->with('success', 'Raffle updated successfully.');
     }
 
     /**

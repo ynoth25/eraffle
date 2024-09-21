@@ -9,7 +9,7 @@
                     <div class="card-header">{{ __('Raffle Draw') }}</div>
 
                     <div class="card-body">
-                        <form action="{{ route('raffle_picks.update', $rafflePick->id) }}" method="POST">
+                        <form action="{{ route('raffle_picks.update', ['raffle_pick' => $rafflePick->id, 'promo' => $promo->id]) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="row mb-3">
