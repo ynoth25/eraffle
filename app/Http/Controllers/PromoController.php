@@ -45,6 +45,12 @@ class PromoController extends Controller
             'terms_and_conditions' => 'required|string',
         ]);
 
+        $hasOpenPromo = Promo::where('end_date', NULL)->latest()->first();
+
+        if($hasOpenPromo) {
+            return redirect()->route('promos.index')->with('error', 'Cannot create a new Promo while another is open.');
+        }
+
         Promo::create($validatedData);
 
         return redirect()->route('promos.index')->with('success', 'Promo created successfully.');
