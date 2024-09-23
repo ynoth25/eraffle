@@ -13,7 +13,11 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-
+                            <div class="text-end mb-3">
+                                <a href="{{ route('promos.index')}}" class="btn btn-secondary">
+                                    {{ __('Back to Promo List') }}
+                                </a>
+                            </div>
                             <table class="table">
                                 <thead>
                                 <tr>

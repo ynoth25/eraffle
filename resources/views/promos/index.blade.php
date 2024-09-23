@@ -49,11 +49,14 @@
                                         <a href="{{ route('prizes.index', compact('promo')) }}" class="me-3">
                                             Prizes
                                         </a>
+                                        <a href="{{ route('entries.index', compact('promo')) }}" class="me-3">
+                                            Entries
+                                        </a>
                                         <a href="{{ route('validations.index', compact('promo')) }}" class="me-3">
                                             Serials
                                         </a>
                                         <a href="{{ route('raffle_picks.index', compact('promo')) }}" class="me-3">
-                                            Raffle Draws
+                                            Raffles
                                         </a>
                                     </td>
                                 </tr>

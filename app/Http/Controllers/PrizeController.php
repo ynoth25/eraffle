@@ -19,9 +19,9 @@ class PrizeController extends Controller
     {
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10); // Default to 10 items per page
-        $promo = Promo::find($request->input('promo'));
+        $promo = Promo::find($request->input('promo')) ?? Promo::whereNull('end_date')->first();
 
-        $prizes = $promo->prizes()
+        $prizes = $promo?->prizes()
             ->where(function ($query) use ($search) {
                 $query->where('code', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");

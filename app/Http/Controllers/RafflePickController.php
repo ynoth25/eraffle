@@ -66,6 +66,10 @@ class RafflePickController extends Controller
             session()->flash('error', 'This promo does not have any available entries.');
         }
 
+        if (!$promo) {
+            session()->flash('error', 'There is no open promo at the moment.');
+        }
+
         return view('raffle_picks.create', compact('prize', 'promo', 'entries'));
     }
 

@@ -79,6 +79,7 @@
                                     </span>
                                     @enderror
                                 </div>
+                                <input id="promo_id" name="promo_id" type="hidden" class="form-control" value="{{ $promo->id }}">
                             </div>
 
 

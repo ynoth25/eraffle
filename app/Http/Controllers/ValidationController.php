@@ -19,7 +19,7 @@ class ValidationController extends Controller
         $perPage = $request->input('per_page', 10);
         $search = $request->input('search', '');
 
-        $promo = Promo::find($request->input('promo'));
+        $promo = Promo::find($request->input('promo')) ?? Promo::whereNull('end_date')->first();
 
         $validations = $promo->serialNumbers()
             ->where(function ($query) use ($search) {

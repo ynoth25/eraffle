@@ -20,7 +20,16 @@ class EntryController extends Controller
         $perPage = $request->input('per_page', 10);
         $search = $request->input('search', '');
 
-        $entries = Entry::query()
+        // Find the promo based on input or default to the first one with a null end_date
+        $promo = Promo::find($request->input('promo')) ?? Promo::whereNull('end_date')->first();
+
+        // Check if promo exists
+        if (!$promo) {
+            return redirect()->back()->with('error', 'No active promo found.');
+        }
+
+        // Build the query on the entries relationship
+        $entries = $promo->entries()
             ->where(function($query) use ($search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
@@ -58,6 +67,7 @@ class EntryController extends Controller
                 'email' => 'nullable|email',
                 'phone' => 'nullable|required_without:email|string|max:255',
                 'address' => 'nullable|string|max:255',
+                'promo_id' => 'nullable|integer|exists:promos,id',
                 'serial_number' => 'required|unique:entries,serial_number|exists:valid_sachets,serial_number|string|max:255',
             ]);
 
@@ -73,9 +83,10 @@ class EntryController extends Controller
                 'address' => $request->address,
                 'status' => 'pending',
                 'serial_number' => $request->serial_number,
+                'promo_id' => $request->promo_id,
             ]);
 
-            return redirect()->route('submit-entry')->with('success', 'Entry submitted successfully!');
+            return redirect()->route('entries.create')->with('success', 'Entry submitted successfully!');
         } catch (\Exception $e) {
             // Log the error
             Log::error('Entry submission failed: ' . $e->getMessage());

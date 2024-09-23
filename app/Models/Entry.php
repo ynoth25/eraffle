@@ -20,6 +20,7 @@ class Entry extends Model
         'phone',
         'address',
         'status',
+        'promo_id',
         'serial_number',
     ];
 
