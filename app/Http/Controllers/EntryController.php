@@ -39,6 +39,10 @@ class EntryController extends Controller
     {
         $promo = Promo::where('end_date', NULL)->latest()->first();
 
+        if(!$promo) {
+            session()->flash('error', 'There is no open promo.');
+        }
+
         return view('entries.create', compact('promo'));
     }
 

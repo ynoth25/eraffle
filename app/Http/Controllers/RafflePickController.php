@@ -52,17 +52,17 @@ class RafflePickController extends Controller
      */
     public function create(Request $request)
     {
-        $prize = Prize::where('status', '!=', 'picked')
-            ->where('promo_id', $request->input('promo'))
+        $promo = Promo::find($request->input('promo')) ?? Promo::whereNull('end_date')->first();
+
+        $prize = $promo?->prizes()->where('status', '!=', 'picked')
             ->inRandomOrder()->first();
-        $entries = Entry::where('status', '!=', 'picked');
-        $promo = Promo::find($request->input('promo'));
+        $entries = $promo?->entries()->where('status', '!=', 'picked');
 
         if (!$prize) {
             session()->flash('error', 'This promo does not have any available prizes.');
         }
 
-        if ($entries->count() <= 0) {
+        if (!$entries) {
             session()->flash('error', 'This promo does not have any available entries.');
         }
 

@@ -96,7 +96,7 @@
 
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <button id="submit-button" type="submit" class="btn btn-primary">
+                                    <button id="submit-button" type="submit" class="btn btn-primary" {{ !$promo ? 'disabled' : '' }}>
                                         {{ __('Submit') }}
                                     </button>
                                 </div>

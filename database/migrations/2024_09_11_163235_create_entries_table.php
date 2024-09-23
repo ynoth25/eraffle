@@ -19,8 +19,13 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->string('status')->default('pending');
             $table->string('serial_number');
+            $table->unsignedBigInteger('promo_id');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('promo_id')
+                ->references('id')
+                ->on('promos');
         });
     }
 
