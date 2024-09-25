@@ -36,18 +36,6 @@ return [
             'throw' => false,
         ],
 
-        'sachets' => [
-            'driver' => 'local',
-            'root' => storage_path('app/sachets'),
-            'throw' => false,
-        ],
-
-        'ids' => [
-            'driver' => 'local',
-            'root' => storage_path('app/ids'),
-            'throw' => false,
-        ],
-
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
@@ -83,8 +71,6 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
-        public_path('sachets') => storage_path('app/sachets'),
-        public_path('ids') => storage_path('app/ids'),
     ],
 
 ];

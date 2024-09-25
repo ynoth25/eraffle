@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Promo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PromoController extends Controller
 {
@@ -13,7 +14,7 @@ class PromoController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $perPage = $request->input('per_page', 10); // Default to 10 if not provided
+        $perPage = $request->input('per_page', 10);
 
         // Search query with pagination
         $promos = Promo::where('name', 'like', "%{$search}%")
@@ -29,15 +30,12 @@ class PromoController extends Controller
      */
     public function create()
     {
-        // Check if there is an open promo without an end date
         $hasOpenPromo = Promo::whereNull('end_date')->exists();
 
         if ($hasOpenPromo) {
-            // Redirect back to the promo listing page with a flash error message
             return redirect()->route('promos.index')->with('error', 'Cannot create a new Promo while another is open.');
         }
 
-        // No open promo, proceed to show the creation form
         return view('promos.create');
     }
 
@@ -51,6 +49,7 @@ class PromoController extends Controller
             'description' => 'required|string',
             'start_date' => 'required|date',
             'terms_and_conditions' => 'required|string',
+            'poster' => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf',
         ]);
 
         $hasOpenPromo = Promo::whereNull('end_date')->exists();
@@ -58,7 +57,12 @@ class PromoController extends Controller
         if ($hasOpenPromo) {
             return redirect()->route('promos.create')->with('error', 'Cannot create a new Promo while another is open.');
         } else {
-          Promo::create($validatedData);
+            if ($request->hasFile('poster')) {
+                $posterPath = $request->file('poster')->store('posters');
+                $validatedData['poster'] = $posterPath;
+            }
+
+            Promo::create($validatedData);
         }
 
         return redirect()->route('promos.create')->with('success', 'Promo created successfully.');
@@ -92,23 +96,30 @@ class PromoController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after:start_date',
             'terms_and_conditions' => 'required|string',
+            'poster' => 'sometimes|file|mimes:jpeg,png,jpg,gif,pdf',
         ]);
 
-        // Check if there is another promo that is open (excluding the current one being updated)
         $hasOpenPromo = Promo::whereNull('end_date')
-            ->where('id', '!=', $promo->id)  // Exclude the current promo
+            ->where('id', '!=', $promo->id)
             ->exists();
 
         if ($hasOpenPromo) {
-            // Redirect back with an error message if another open promo exists
             return redirect()->route('promos.edit', $promo->id)
                 ->with('error', 'Cannot update this Promo while another is open.');
         }
 
-        // Proceed with the update if no other open promo exists
+        if ($request->hasFile('poster')) {
+            if ($promo->poster) {
+                Storage::disk('public')->delete($promo->poster);
+            }
+
+            // Store new poster
+            $posterPath = $request->file('poster')->store('posters');
+            $validatedData['poster'] = $posterPath;
+        }
+
         $promo->update($validatedData);
 
-        // Redirect back with a success message
         return redirect()->route('promos.edit', $promo->id)
             ->with('success', 'Promo updated successfully.');
     }
@@ -118,6 +129,10 @@ class PromoController extends Controller
      */
     public function destroy(Promo $promo)
     {
+        if ($promo->poster) {
+            Storage::disk('public')->delete($promo->poster);
+        }
+
         $promo->delete();
 
         return redirect()->route('promos.index')->with('success', 'Promo deleted successfully.');

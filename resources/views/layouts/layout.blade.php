@@ -19,7 +19,26 @@
 <body>
 <div id="app">
     <main class="py-4">
-        @yield('content')
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <!-- Sidebar -->
+                    <div class="card">
+                        <div class="card-header">{{ __('Admin Panel') }}</div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><a href="{{ route('home') }}">Home</a></li>
+                            <li class="list-group-item"><a href="{{ route('promos.index') }}">Promos</a></li>
+                            <li class="list-group-item"><a href="{{ route('prizes.index') }}">Prizes</a></li>
+                            <li class="list-group-item"><a href="{{ route('validations.index') }}">Validations</a></li>
+                            <li class="list-group-item"><a href="{{ route('raffle_picks.index') }}">Entries</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    @yield('content')
+                </div>
+            </div>
+        </div>
     </main>
 </div>
 </body>

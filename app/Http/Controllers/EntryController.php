@@ -22,6 +22,7 @@ class EntryController extends Controller
 
         // Find the promo based on input or default to the first one with a null end_date
         $promo = Promo::find($request->input('promo')) ?? Promo::whereNull('end_date')->first();
+        $promos = Promo::whereNull('deleted_at')->orderBy('created_at', 'desc')->get();
 
         // Check if promo exists
         if (!$promo) {
@@ -36,9 +37,10 @@ class EntryController extends Controller
                     ->orWhere('phone', 'like', "%{$search}%")
                     ->orWhere('address', 'like', "%{$search}%");
             })
+            ->where('promo_id', $request->query('promo_id'))
             ->paginate($perPage);
 
-        return view('entries.index', compact('entries', 'search', 'perPage'));
+        return view('entries.index', compact('entries', 'promos', 'search', 'perPage'));
     }
 
     /**

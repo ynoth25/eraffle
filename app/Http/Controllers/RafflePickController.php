@@ -20,10 +20,10 @@ class RafflePickController extends Controller
         $perPage = $request->input('per_page', 10);
         $search = $request->input('search', '');
 
-        $promos = Promo::all(); // Get all promos for the dropdown
+        $promos = Promo::whereNull('deleted_at')->orderBy('created_at', 'desc')->get();
         $perPage = $request->input('per_page', 10); // Get pagination input
         $search = $request->input('search', ''); // Get search input
-        $promo = Promo::find($request->input('promo')); // Get the selected promo ID
+        $promo = Promo::find(5); // Get the selected promo ID
 
         $rafflePicks = RafflePick::when($promo, function($query, $promo) {
             // Filter raffle picks by promo ID through the prize relationship
@@ -44,7 +44,7 @@ class RafflePickController extends Controller
             })
             ->paginate($perPage); // Paginate the result
 
-        return view('raffle_picks.index', compact('rafflePicks', 'promo', 'search', 'perPage'));
+        return view('raffle_picks.index', compact('rafflePicks',  'promos', 'search', 'perPage'));
     }
 
     /**
@@ -52,7 +52,7 @@ class RafflePickController extends Controller
      */
     public function create(Request $request)
     {
-        $promo = Promo::find($request->input('promo')) ?? Promo::whereNull('end_date')->first();
+        $promo = Promo::whereNull('end_date')->latest()->first();
 
         $prize = $promo?->prizes()->where('status', '!=', 'picked')
             ->inRandomOrder()->first();

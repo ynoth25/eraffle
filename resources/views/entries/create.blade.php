@@ -11,6 +11,7 @@
                         <form method="POST" action="{{ route('entries.store') }}" enctype="multipart/form-data">
                             @csrf
 
+                            <!-- Name Input -->
                             <div class="row mb-3">
                                 <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
@@ -25,6 +26,7 @@
                                 </div>
                             </div>
 
+                            <!-- Email Input -->
                             <div class="row mb-3">
                                 <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email') }}</label>
 
@@ -39,6 +41,7 @@
                                 </div>
                             </div>
 
+                            <!-- Phone Input -->
                             <div class="row mb-3">
                                 <label for="phone" class="col-md-4 col-form-label text-md-end">{{ __('Phone') }}</label>
 
@@ -53,6 +56,7 @@
                                 </div>
                             </div>
 
+                            <!-- Address Input -->
                             <div class="row mb-3">
                                 <label for="address" class="col-md-4 col-form-label text-md-end">{{ __('Address') }}</label>
 
@@ -67,8 +71,9 @@
                                 </div>
                             </div>
 
+                            <!-- Sachet Serial Number Input -->
                             <div class="row mb-3">
-                                <label for="address" class="col-md-4 col-form-label text-md-end">{{ __('Sachet Serial Number') }}</label>
+                                <label for="serial_number" class="col-md-4 col-form-label text-md-end">{{ __('Sachet Serial Number') }}</label>
 
                                 <div class="col-md-6">
                                     <input id="serial_number" type="text" class="form-control @error('serial_number') is-invalid @enderror" name="serial_number" value="{{ old('serial_number') }}">
@@ -79,10 +84,25 @@
                                     </span>
                                     @enderror
                                 </div>
-                                <input id="promo_id" name="promo_id" type="hidden" class="form-control" value="{{ $promo->id }}">
+                                <input id="promo_id" name="promo_id" type="hidden" class="form-control" value="{{ $promo?->id }}">
                             </div>
 
+                            <!-- Image Upload Input -->
+                            <div class="row mb-3">
+                                <label for="image" class="col-md-4 col-form-label text-md-end">{{ __('Upload Poster') }}</label>
 
+                                <div class="col-md-6">
+                                    <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image">
+
+                                    @error('image')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Success/Error Messages -->
                             @if (session('success'))
                                 <div class="alert alert-success">
                                     {{ session('success') }}
@@ -95,6 +115,7 @@
                                 </div>
                             @endif
 
+                            <!-- Submit Button -->
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button id="submit-button" type="submit" class="btn btn-primary" {{ !$promo ? 'disabled' : '' }}>

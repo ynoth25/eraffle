@@ -9,8 +9,10 @@ services:
             - .:/var/www/html
             - ./node_modules:/var/www/html/node_modules
             - ./docker/apache/development.conf:/etc/apache2/sites-available/000-default.conf
+            - ./storage:/var/www/html/storage
+            - ./public/storage:/var/www/html/public/storage
         ports:
-            - "8000:80"  # Laravel port
+            - "8000:80"
         environment:
             - DB_CONNECTION=mysql
             - DB_HOST=mysql

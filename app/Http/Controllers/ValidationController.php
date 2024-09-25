@@ -18,17 +18,16 @@ class ValidationController extends Controller
     {
         $perPage = $request->input('per_page', 10);
         $search = $request->input('search', '');
+        $promos = Promo::whereNull('deleted_at')->orderBy('created_at', 'desc')->get();
 
-        $promo = Promo::find($request->input('promo')) ?? Promo::whereNull('end_date')->first();
-
-        $validations = $promo->serialNumbers()
-            ->where(function ($query) use ($search) {
+        $validations = Validation::where(function ($query) use ($search) {
                 $query->where('serial_number', 'like', "%{$search}%")
                     ->orWhere('status', 'like', "%{$search}%");
             })
+            ->where('promo_id', $request->query('promo_id'))
             ->paginate($perPage);
 
-        return view('validations.index', compact('validations', 'promo', 'search', 'perPage'));
+        return view('validations.index', compact('validations', 'promos', 'search', 'perPage'));
     }
 
     /**
