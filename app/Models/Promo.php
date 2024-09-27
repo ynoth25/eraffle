@@ -19,6 +19,7 @@ class Promo extends Model
         'description',
         'start_date',
         'end_date',
+        'poster',
         'terms_and_conditions',
     ];
 

@@ -20,10 +20,10 @@ class RafflePickController extends Controller
         $perPage = $request->input('per_page', 10);
         $search = $request->input('search', '');
 
-        $promos = Promo::all(); // Get all promos for the dropdown
+        $promos = Promo::whereNull('deleted_at')->orderBy('created_at', 'desc')->get();
         $perPage = $request->input('per_page', 10); // Get pagination input
         $search = $request->input('search', ''); // Get search input
-        $promo = Promo::find($request->input('promo')); // Get the selected promo ID
+        $promo = Promo::find(5); // Get the selected promo ID
 
         $rafflePicks = RafflePick::when($promo, function($query, $promo) {
             // Filter raffle picks by promo ID through the prize relationship
@@ -44,7 +44,7 @@ class RafflePickController extends Controller
             })
             ->paginate($perPage); // Paginate the result
 
-        return view('raffle_picks.index', compact('rafflePicks', 'promo', 'search', 'perPage'));
+        return view('raffle_picks.index', compact('rafflePicks',  'promos', 'search', 'perPage'));
     }
 
     /**
@@ -52,18 +52,22 @@ class RafflePickController extends Controller
      */
     public function create(Request $request)
     {
-        $prize = Prize::where('status', '!=', 'picked')
-            ->where('promo_id', $request->input('promo'))
+        $promo = Promo::whereNull('end_date')->latest()->first();
+
+        $prize = $promo?->prizes()->where('status', '!=', 'picked')
             ->inRandomOrder()->first();
-        $entries = Entry::where('status', '!=', 'picked');
-        $promo = Promo::find($request->input('promo'));
+        $entries = $promo?->entries()->where('status', '!=', 'picked');
 
         if (!$prize) {
             session()->flash('error', 'This promo does not have any available prizes.');
         }
 
-        if ($entries->count() <= 0) {
+        if (!$entries) {
             session()->flash('error', 'This promo does not have any available entries.');
+        }
+
+        if (!$promo) {
+            session()->flash('error', 'There is no open promo at the moment.');
         }
 
         return view('raffle_picks.create', compact('prize', 'promo', 'entries'));

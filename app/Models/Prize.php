@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Prize extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +20,8 @@ class Prize extends Model
         'code',
         'description',
         'promo_id',
-        'status'
+        'status',
+        'quantity'
     ];
 
     /**

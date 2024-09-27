@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Promo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PromoController extends Controller
 {
@@ -13,7 +14,7 @@ class PromoController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $perPage = $request->input('per_page', 10); // Default to 10 if not provided
+        $perPage = $request->input('per_page', 10);
 
         // Search query with pagination
         $promos = Promo::where('name', 'like', "%{$search}%")
@@ -29,6 +30,12 @@ class PromoController extends Controller
      */
     public function create()
     {
+        $hasOpenPromo = Promo::whereNull('end_date')->exists();
+
+        if ($hasOpenPromo) {
+            return redirect()->route('promos.index')->with('error', 'Cannot create a new Promo while another is open.');
+        }
+
         return view('promos.create');
     }
 
@@ -41,19 +48,24 @@ class PromoController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after:start_date',
             'terms_and_conditions' => 'required|string',
+            'poster' => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf',
         ]);
 
-        $hasOpenPromo = Promo::where('end_date', NULL)->latest()->first();
+        $hasOpenPromo = Promo::whereNull('end_date')->exists();
 
-        if($hasOpenPromo) {
-            return redirect()->route('promos.index')->with('error', 'Cannot create a new Promo while another is open.');
+        if ($hasOpenPromo) {
+            return redirect()->route('promos.create')->with('error', 'Cannot create a new Promo while another is open.');
+        } else {
+            if ($request->hasFile('poster')) {
+                $posterPath = $request->file('poster')->store('posters');
+                $validatedData['poster'] = $posterPath;
+            }
+
+            Promo::create($validatedData);
         }
 
-        Promo::create($validatedData);
-
-        return redirect()->route('promos.index')->with('success', 'Promo created successfully.');
+        return redirect()->route('promos.create')->with('success', 'Promo created successfully.');
     }
 
     /**
@@ -77,17 +89,39 @@ class PromoController extends Controller
      */
     public function update(Request $request, Promo $promo)
     {
+        // Validate the incoming request data
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after:start_date',
             'terms_and_conditions' => 'required|string',
+            'poster' => 'sometimes|file|mimes:jpeg,png,jpg,gif,pdf',
         ]);
+
+        $hasOpenPromo = Promo::whereNull('end_date')
+            ->where('id', '!=', $promo->id)
+            ->exists();
+
+        if ($hasOpenPromo) {
+            return redirect()->route('promos.edit', $promo->id)
+                ->with('error', 'Cannot update this Promo while another is open.');
+        }
+
+        if ($request->hasFile('poster')) {
+            if ($promo->poster) {
+                Storage::disk('public')->delete($promo->poster);
+            }
+
+            // Store new poster
+            $posterPath = $request->file('poster')->store('posters');
+            $validatedData['poster'] = $posterPath;
+        }
 
         $promo->update($validatedData);
 
-        return redirect()->route('promos.edit', $promo->id)->with('success', 'Promo updated successfully.');
+        return redirect()->route('promos.edit', $promo->id)
+            ->with('success', 'Promo updated successfully.');
     }
 
     /**
@@ -95,6 +129,10 @@ class PromoController extends Controller
      */
     public function destroy(Promo $promo)
     {
+        if ($promo->poster) {
+            Storage::disk('public')->delete($promo->poster);
+        }
+
         $promo->delete();
 
         return redirect()->route('promos.index')->with('success', 'Promo deleted successfully.');
