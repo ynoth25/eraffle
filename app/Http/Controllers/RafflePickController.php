@@ -23,7 +23,7 @@ class RafflePickController extends Controller
         $promos = Promo::whereNull('deleted_at')->orderBy('created_at', 'desc')->get();
         $perPage = $request->input('per_page', 10); // Get pagination input
         $search = $request->input('search', ''); // Get search input
-        $promo = Promo::find(5); // Get the selected promo ID
+        $promo = Promo::whereNull('end_date')->latest()->first();
 
         $rafflePicks = RafflePick::when($promo, function ($query, $promo) {
             // Filter raffle picks by promo ID through the prize relationship
@@ -33,11 +33,11 @@ class RafflePickController extends Controller
         })
             ->where(function ($query) use ($search) {
                 // Add search functionality for prize and entry details
-                $query->whereHas('prize', function ($query) use ($search) {
-                    $query->where('code', 'like', "%{$search}%")
-                        ->orWhere('description', 'like', "%{$search}%");
-                })
-                    ->orWhereHas('entry', function ($query) use ($search) {
+//                $query->whereHas('prize', function ($query) use ($search) {
+//                    $query->where('code', 'like', "%{$search}%")
+//                        ->orWhere('description', 'like', "%{$search}%");
+//                })
+                $query->orWhereHas('entry', function ($query) use ($search) {
                         $query->where('name', 'like', "%{$search}%")
                             ->orWhere('email', 'like', "%{$search}%");
                     });
@@ -54,13 +54,13 @@ class RafflePickController extends Controller
     {
         $promo = Promo::whereNull('end_date')->latest()->first();
 
-        $prize = $promo?->prizes()->where('status', '!=', 'picked')
-            ->inRandomOrder()->first();
+//        $prize = $promo?->prizes()->where('status', '!=', 'picked')
+//            ->inRandomOrder()->first();
         $entries = $promo?->entries()->where('status', '!=', 'picked');
 
-        if (!$prize) {
-            session()->flash('error', 'This promo does not have any available prizes.');
-        }
+//        if (!$prize) {
+//            session()->flash('error', 'This promo does not have any available prizes.');
+//        }
 
         if (!$entries) {
             session()->flash('error', 'This promo does not have any available entries.');
@@ -70,7 +70,7 @@ class RafflePickController extends Controller
             session()->flash('error', 'There is no open promo at the moment.');
         }
 
-        return view('raffle_picks.create', compact('prize', 'promo', 'entries'));
+        return view('raffle_picks.create', compact( 'promo', 'entries'));
     }
 
     /**
@@ -87,23 +87,22 @@ class RafflePickController extends Controller
                 throw new \Exception('No available entry for this raffle.');
             }
 
-            // Find a random prize that has not been picked yet
-            $prize = Prize::where('status', '!=', 'picked')->inRandomOrder()->first();
-            if (!$prize) {
-                throw new \Exception('No available prize for this raffle.');
-            }
+//            // Find a random prize that has not been picked yet
+//            $prize = Prize::where('status', '!=', 'picked')->inRandomOrder()->first();
+//            if (!$prize) {
+//                throw new \Exception('No available prize for this raffle.');
+//            }
 
             // Update the entry and prize status to 'picked'
             $entry->status = 'picked';
             $entry->save();
 
-            $prize->status = 'picked';
-            $prize->save();
+//            $prize->status = 'picked';
+//            $prize->save();
 
             // Create a record for the raffle pick
             RafflePick::create([
                 'entry_id' => $entry->id,
-                'prize_id' => $prize->id,
                 'pick_date' => now(),
             ]);
 
@@ -113,7 +112,6 @@ class RafflePickController extends Controller
             return redirect()->route('raffle_picks.create')->with([
                 'success' => 'Entry and prize have been picked successfully!',
                 'pickedEntry' => $entry,
-                'pickedPrize' => $prize,
             ]);
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback the transaction on error

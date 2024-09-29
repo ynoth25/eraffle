@@ -1455,6 +1455,8 @@
                                             </span>
                                         @enderror
                                     </div>
+                                    <input type="hidden" id="promo_id" name="promo_id"
+                                           value="{{ $promo?->id }}">
 
                                     @if (session('success'))
                                         <div class="alert alert-success">

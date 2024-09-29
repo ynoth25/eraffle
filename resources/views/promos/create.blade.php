@@ -1392,7 +1392,7 @@
                             {{-- <img src="https://via.placeholder.com/400x200" alt="Card Image"> --}}
                             <div class="card-content">
                                 <h2 class="card-title">Create Promos</h2>
-                                <form class="horizontal-form" method="POST" action="{{ route('entries.store') }}"
+                                <form class="horizontal-form" method="POST" action="{{ route('promos.store') }}"
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group">

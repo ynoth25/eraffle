@@ -1466,6 +1466,8 @@
                             {{-- <img src="https://via.placeholder.com/400x200" alt="Card Image"> --}}
                             <div class="card-content">
                                 <h2 class="card-title">Raffle Draw</h2>
+                                <form class="horizontal-form" method="POST" action="{{ route('raffle_picks.store', ['promo' => $promo?->id]) }}">
+                                    @csrf
                                 @if (session('error'))
                                     <div class="alert alert-danger">
                                         {{ session('error') }}
@@ -1473,77 +1475,88 @@
                                 @endif
 
                                 <!-- Promo Details Section -->
-                                <div class="row mb-3">
-                                    <label for="promo-name"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Prize Code') }}</label>
-                                    <div class="col-md-6">
-                                        <input id="promo-name" type="text" class="form-control"
-                                            value="{{ $prize?->code }}" readonly>
-                                    </div>
-                                </div>
+{{--                                <div class="row mb-3">--}}
+{{--                                    <label for="promo-name"--}}
+{{--                                        class="col-md-4 col-form-label text-md-end">{{ __('Prize Code') }}</label>--}}
+{{--                                    <div class="col-md-6">--}}
+{{--                                        <input id="promo-name" type="text" class="form-control"--}}
+{{--                                            value="{{ $prize?->code }}" readonly>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
-                                <div class="row mb-3">
-                                    <label for="promo-description"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Prize Description') }}</label>
-                                    <div class="col-md-6">
-                                        <textarea id="promo-description" class="form-control" rows="3" readonly>{{ $prize?->description }}</textarea>
-                                    </div>
-                                </div>
+{{--                                <div class="row mb-3">--}}
+{{--                                    <label for="promo-description"--}}
+{{--                                        class="col-md-4 col-form-label text-md-end">{{ __('Prize Description') }}</label>--}}
+{{--                                    <div class="col-md-6">--}}
+{{--                                        <textarea id="promo-description" class="form-control" rows="3" readonly>{{ $prize?->description }}</textarea>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
-                                <div class="row mb-3">
-                                    <label for="start-date"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Quantity') }}</label>
-                                    <div class="col-md-6">
-                                        <input id="start-date" type="text" class="form-control"
-                                            value="{{ $prize?->quantity }}" readonly>
-                                    </div>
-                                </div>
+{{--                                <div class="row mb-3">--}}
+{{--                                    <label for="start-date"--}}
+{{--                                        class="col-md-4 col-form-label text-md-end">{{ __('Quantity') }}</label>--}}
+{{--                                    <div class="col-md-6">--}}
+{{--                                        <input id="start-date" type="text" class="form-control"--}}
+{{--                                            value="{{ $prize?->quantity }}" readonly>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
-                                <!-- Prize Section -->
-                                <div class="row mb-3">
-                                    <label for="prize"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Prize') }}</label>
+{{--                                <!-- Prize Section -->--}}
+{{--                                <div class="row mb-3">--}}
+{{--                                    <label for="prize"--}}
+{{--                                        class="col-md-4 col-form-label text-md-end">{{ __('Prize') }}</label>--}}
 
-                                    <div class="col-md-6">
-                                        <input id="prize" type="text"
-                                            class="form-control @error('prize') is-invalid @enderror" name="prize"
-                                            value="{{ session('pickedPrize')->description ?? '' }}" readonly>
+{{--                                    <div class="col-md-6">--}}
+{{--                                        <input id="prize" type="text"--}}
+{{--                                            class="form-control @error('prize') is-invalid @enderror" name="prize"--}}
+{{--                                            value="{{ session('pickedPrize')->description ?? '' }}" readonly>--}}
 
-                                        @error('prize')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
+{{--                                        @error('prize')--}}
+{{--                                            <span class="invalid-feedback" role="alert">--}}
+{{--                                                <strong>{{ $message }}</strong>--}}
+{{--                                            </span>--}}
+{{--                                        @enderror--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
-                                @if (session('success'))
-                                    <div class="alert alert-success">
-                                        {{ session('success') }}
-                                    </div>
-                                @endif
+{{--                                @if (session('success'))--}}
+{{--                                    <div class="alert alert-success">--}}
+{{--                                    </div>--}}
+{{--                                @endif--}}
                                 <br>
 
                                 <!-- Disable the draw button if no available prizes exist -->
                                 <div class="row mb-0">
                                     <div class="col-md-6 offset-md-4">
                                         <button type="submit" class="btn btn-primary"
-                                            {{ !$prize ? 'disabled' : '' }}>
+                                            {{ !$entries ? 'disabled' : '' }}>
                                             {{ __('Draw') }}
                                         </button>
                                     </div>
                                     <br>
-                                    <div class="col-md-6 offset-md-4 mt-2">
-                                        <a href="{{ route('raffle_picks.index', compact('promo')) }}"
-                                            style="border: 1px solid #98ddaa; border-radius: 5px; padding: 6px;">
-                                            See winners
-                                        </a>
-                                    </div>
+{{--                                    <div class="col-md-6 offset-md-4 mt-2">--}}
+{{--                                        <a href="{{ route('raffle_picks.index', compact('promo')) }}"--}}
+{{--                                            style="border: 1px solid #98ddaa; border-radius: 5px; padding: 6px;">--}}
+{{--                                            See winners--}}
+{{--                                        </a>--}}
+{{--                                    </div>--}}
                                 </div>
+                                </form>
+                                @if (session('success') && session('pickedEntry'))
+                                    <div class="modal">
+                                        <div class="modal-content">
+                                            <span class="close" onclick="document.querySelector('.modal').style.display='none'">&times;</span>
+                                            <h2>Person Picked</h2>
+                                            <p>{{ session('pickedEntry->name') }}</p>
+                                            {{ session()->forget('pickedEntry') }} <!-- Clear session after display -->
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="wrap">
                     <div id="primary" class="content-area">
                         <main id="main" class="site-main">
