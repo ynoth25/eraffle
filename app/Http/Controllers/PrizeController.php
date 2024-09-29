@@ -22,15 +22,15 @@ class PrizeController extends Controller
         $promos = Promo::whereNull('deleted_at')->orderBy('created_at', 'desc')->get();
 
         $prizes = Prize::where(function ($query) use ($search) {
-                $query->where('code', 'like', "%{$search}%")
-                    ->whereNull('deleted_at')
-                    ->orWhere('description', 'like', "%{$search}%");
-            })
+            $query->where('code', 'like', "%{$search}%")
+                ->whereNull('deleted_at')
+                ->orWhere('description', 'like', "%{$search}%");
+        })
             ->where('promo_id', $request->query('promo_id'))
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 
-        return view('prizes.index', compact('promos','prizes', 'search', 'perPage'));
+        return view('prizes.index', compact('promos', 'prizes', 'search', 'perPage'));
     }
 
     /**
@@ -115,7 +115,7 @@ class PrizeController extends Controller
 
         $prize->update($validatedData);
 
-            return redirect()->route('prizes.edit', compact('prize'))->with('success', 'Prize updated successfully.');
+        return redirect()->route('prizes.edit', compact('prize'))->with('success', 'Prize updated successfully.');
     }
 
     /**

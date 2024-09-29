@@ -1,150 +1,3 @@
-{{-- @extends('layouts.layout')
-
-@section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">{{ __('Create Entry') }}</div>
-
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('entries.store') }}" enctype="multipart/form-data">
-                            @csrf
-
-                            <!-- Name Input -->
-                            <div class="row mb-3">
-                                <label for="name"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="name" type="text"
-                                        class="form-control @error('name') is-invalid @enderror" name="name"
-                                        value="{{ old('name') }}">
-
-                                    @error('name')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <!-- Email Input -->
-                            <div class="row mb-3">
-                                <label for="email"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Email') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="email" type="email"
-                                        class="form-control @error('email') is-invalid @enderror" name="email"
-                                        value="{{ old('email') }}">
-
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <!-- Phone Input -->
-                            <div class="row mb-3">
-                                <label for="phone"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Phone') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="phone" type="text"
-                                        class="form-control @error('phone') is-invalid @enderror" name="phone"
-                                        value="{{ old('phone') }}">
-
-                                    @error('phone')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <!-- Address Input -->
-                            <div class="row mb-3">
-                                <label for="address"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Address') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="address" type="text"
-                                        class="form-control @error('address') is-invalid @enderror" name="address"
-                                        value="{{ old('address') }}">
-
-                                    @error('address')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <!-- Sachet Serial Number Input -->
-                            <div class="row mb-3">
-                                <label for="serial_number" class="col-md-4 col-form-label text-md-end">{{ __('Sachet Serial Number') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="serial_number" type="text"
-                                        class="form-control @error('serial_number') is-invalid @enderror"
-                                        name="serial_number" value="{{ old('serial_number') }}">
-
-                                    @error('serial_number')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <input id="promo_id" name="promo_id" type="hidden" class="form-control" value="{{ $promo?->id }}">
-                            </div>
-
-                            <!-- Image Upload Input -->
-                            <div class="row mb-3">
-                                <label for="image" class="col-md-4 col-form-label text-md-end">{{ __('Upload Poster') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image">
-
-                                    @error('image')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <!-- Success/Error Messages -->
-                            @if (session('success'))
-                                <div class="alert alert-success">
-                                    {{ session('success') }}
-                                </div>
-                            @endif
-
-                            @if (session('error'))
-                                <div class="alert alert-danger">
-                                    {{ session('error') }}
-                                </div>
-                            @endif
-
-                            <!-- Submit Button -->
-                            <div class="row mb-0">
-                                <div class="col-md-6 offset-md-4">
-                                    <button id="submit-button" type="submit" class="btn btn-primary" {{ !$promo ? 'disabled' : '' }}>
-                                        {{ __('Submit') }}
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-@endsection --}}
-
 <!DOCTYPE html>
 <html lang="en-US" class="no-js no-svg">
 
@@ -1639,20 +1492,11 @@
                                         <li>There is no limit to the number of entries per person. The more Chaga Coffee
                                             sachets
                                             purchased, the more chances of winning.</li>
-                                        <li>Raffle entries must be registered thru the company’s website on or before
-                                            December
-                                            19,
-                                            2024,
-                                            at 11:59 PM to be eligible for the draw. Actual sachets must be kept as
-                                            proof
-                                            for
-                                            claiming
-                                            prizes.</li>
-                                        <li>Winners will be electronically drawn on December 20, 2024 live via our FB
-                                            Page
-                                            under
-                                            the
-                                            supervision of a DTI Representative</li>
+                                        <li>Scan the QR Code at the back of the Chaga sachet to register your entry on
+                                            or before December 19, 2024, at 11:59 PM to be eligible for the draw. Actual
+                                            sachet must be kept as proof for claiming prizes.</li>
+                                        <li>Winners will be electronically drawn at PureBloom Office on December 20,
+                                            2024 under the supervision of an authorized Representative.</li>
                                     </ol>
                                 </div>
 
@@ -1671,8 +1515,6 @@
                                             will be awarded to him.</li>
                                         <li>Winners will be notified thru the contact information provided upon his
                                             registration.
-                                            The names of the winners will also be posted at the company’s website and FB
-                                            Page.
                                         </li>
                                         <li>
                                             For validation, the following must be presented by the winners upon claiming

@@ -63,7 +63,8 @@ class FaqController extends Controller
      */
     public function edit(Faq $faq)
     {
-        return view('faqs.edit', compact('faq'));
+        $promos = Promo::all();
+        return view('faqs.edit', compact('faq', 'promos'));
     }
 
     /**

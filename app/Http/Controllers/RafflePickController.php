@@ -25,19 +25,19 @@ class RafflePickController extends Controller
         $search = $request->input('search', ''); // Get search input
         $promo = Promo::find(5); // Get the selected promo ID
 
-        $rafflePicks = RafflePick::when($promo, function($query, $promo) {
+        $rafflePicks = RafflePick::when($promo, function ($query, $promo) {
             // Filter raffle picks by promo ID through the prize relationship
             return $query->whereHas('prize.promo', function ($query) use ($promo) {
                 $query->where('id', $promo->id);
             });
         })
-            ->where(function($query) use ($search) {
+            ->where(function ($query) use ($search) {
                 // Add search functionality for prize and entry details
-                $query->whereHas('prize', function($query) use ($search) {
+                $query->whereHas('prize', function ($query) use ($search) {
                     $query->where('code', 'like', "%{$search}%")
                         ->orWhere('description', 'like', "%{$search}%");
                 })
-                    ->orWhereHas('entry', function($query) use ($search) {
+                    ->orWhereHas('entry', function ($query) use ($search) {
                         $query->where('name', 'like', "%{$search}%")
                             ->orWhere('email', 'like', "%{$search}%");
                     });

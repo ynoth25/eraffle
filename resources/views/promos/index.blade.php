@@ -1,68 +1,3 @@
-{{-- @extends('layouts.app')
-
-@section('content')
-    <div class="card">
-        <div class="card-header">{{ __('Promos') }}</div>
-
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Terms & Conditions</th>
-                    <th>
-                        <div>
-                            <a href="{{ route('promos.create')}}" class="btn btn-success">
-                                {{ __('Create Promo    ') }}
-                            </a>
-                        </div>
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                @forelse($promos as $promo)
-                    <tr>
-                        <td>{{ $promo->name}}</td>
-                        <td>{{ $promo->description}}</td>
-                        <td>{{ $promo->start_date}}</td>
-                        <td>{{ $promo->end_date}}</td>
-                        <td>{{ $promo->terms_and_conditions}}</td>
-                        <td>
-                            <a href="{{ route('promos.edit', ['promo' => $promo->id]) }}" class="me-3 btn btn-success">
-                                Edit
-                            </a>
-                            <form action="{{ route('promos.destroy', $promo->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this promo?');" style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="5">No promos found.</td>
-                    </tr>
-                @endforelse
-                </tbody>
-            </table>
-            @if (session('status'))
-                <div class="alert alert-success" role="alert">
-                    {{ session('status') }}
-                </div>
-            @endif
-            @if (session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
-            @endif
-        </div>
-    </div>
-@endsection --}}
-
-
 <!DOCTYPE html>
 <html lang="en-US" class="no-js no-svg">
 
@@ -1421,6 +1356,14 @@
         }
 
         /* custom logout CSS */
+
+        .btn-link {
+            padding: 3px;
+            border: 1px solid #98ddaa;
+            border-radius: 2px;
+            margin: 2px;
+        }
+
         .button-3 {
             appearance: none;
             background-color: #2ea44f;
@@ -1486,6 +1429,12 @@
                 width: 100%;
                 /* margin: 20px; */
             }
+        }
+
+        .btn-link {
+            padding: 3px;
+            border-radius: 2px;
+            margin: 2px;
         }
     </style>
     <link rel="icon"
@@ -1583,6 +1532,7 @@
                 <div class="container">
                     <div class="main-content">
                         <div style="text-align: right; width: 100%; max-width: 1200px;">
+                            @include('layouts.admin-panel')
                             <!-- HTML !-->
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
@@ -1590,20 +1540,25 @@
                             <br>
                         </div>
                         <div class="table-container">
-                            @if (session('status'))
+                            @if ('success')
                                 <div class="alert alert-success" role="alert">
                                     {{ session('status') }}
                                 </div>
                             @endif
                             <div style="text-align: right; width: 100%; max-width: 1200px;">
                                 <a href="{{ route('promos.create') }}"
-                                    style="padding: 8px; margin: 2px; border-radius: 5px; background-color: #00d084;">
+                                    style="padding: 8px; margin: 2px; border-radius: 5px; border: 1px solid #00d084;">
                                     {{ __('Create Promo    ') }}
                                 </a>
-                                <a href="{{ route('logout') }}"
+                                {{-- <a href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();"
                                     style="padding: 8px; margin: 2px; border-radius: 5px; background-color: #f1606d;">
                                     {{ __('Logout    ') }}
                                 </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form> --}}
                             </div>
                             <table class="responsive-table">
                                 <thead>
@@ -1626,19 +1581,19 @@
                                             <td>{{ $promo->terms_and_conditions }}</td>
                                             <td>
                                                 <a href="{{ route('promos.edit', ['promo' => $promo->id]) }}"
-                                                    class="me-3">
+                                                    class="btn-link promo-edit">
                                                     Edit
                                                 </a>
                                                 <a href="{{ route('prizes.index', compact('promo')) }}"
-                                                    class="me-3">
+                                                    class="btn-link promo-prizes">
                                                     Prizes
                                                 </a>
                                                 <a href="{{ route('validations.index', compact('promo')) }}"
-                                                    class="me-3">
+                                                    class="btn-link promo-serial">
                                                     Serials
                                                 </a>
                                                 <a href="{{ route('raffle_picks.index', compact('promo')) }}"
-                                                    class="me-3">
+                                                    class="btn-link promo-raffle-draw">
                                                     Raffle Draws
                                                 </a>
                                             </td>

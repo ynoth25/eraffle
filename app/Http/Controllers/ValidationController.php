@@ -21,9 +21,9 @@ class ValidationController extends Controller
         $promos = Promo::whereNull('deleted_at')->orderBy('created_at', 'desc')->get();
 
         $validations = Validation::where(function ($query) use ($search) {
-                $query->where('serial_number', 'like', "%{$search}%")
-                    ->orWhere('status', 'like', "%{$search}%");
-            })
+            $query->where('serial_number', 'like', "%{$search}%")
+                ->orWhere('status', 'like', "%{$search}%");
+        })
             ->where('promo_id', $request->query('promo_id'))
             ->paginate($perPage);
 
@@ -108,7 +108,7 @@ class ValidationController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('validations.edit', compact('validation','promo'))->withErrors($validator)->withInput();
+            return redirect()->route('validations.edit', compact('validation', 'promo'))->withErrors($validator)->withInput();
         }
 
         $validation->update([
@@ -116,7 +116,7 @@ class ValidationController extends Controller
             'status' => $request->input('status')
         ]);
 
-        return redirect()->route('validations.edit', compact('validation','promo'))->with('success', 'Validation updated successfully.');
+        return redirect()->route('validations.edit', compact('validation', 'promo'))->with('success', 'Validation updated successfully.');
     }
 
     /**

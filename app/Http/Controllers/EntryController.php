@@ -31,7 +31,7 @@ class EntryController extends Controller
 
         // Build the query on the entries relationship
         $entries = $promo->entries()
-            ->where(function($query) use ($search) {
+            ->where(function ($query) use ($search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
                     ->orWhere('phone', 'like', "%{$search}%")
@@ -50,7 +50,7 @@ class EntryController extends Controller
     {
         $promo = Promo::where('end_date', NULL)->latest()->first();
 
-        if(!$promo) {
+        if (!$promo) {
             session()->flash('error', 'There is no open promo.');
         }
 
