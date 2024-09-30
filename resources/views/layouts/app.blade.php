@@ -20,7 +20,8 @@
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm"
+            style="background-color: #61ce70 !important;">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -85,12 +86,18 @@
                         <div class="card">
                             <div class="card-header">{{ __('Admin Panel') }}</div>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><a href="{{ route('home') }}">Home</a></li>
-                                <li class="list-group-item"><a href="{{ route('promos.index') }}">Promos</a></li>
-                                <li class="list-group-item"><a href="{{ route('prizes.index') }}">Prizes</a></li>
-                                <li class="list-group-item"><a href="{{ route('validations.index') }}">Validations</a></li>
-                                <li class="list-group-item"><a href="{{ route('entries.index') }}">Entries</a></li>
-                                <li class="list-group-item"><a href="{{ route('raffle_picks.index') }}">Raffles</a></li>
+                                <li class="list-group-item"><a style="text-decoration: none;"
+                                        href="{{ route('home') }}">Home</a></li>
+                                <li class="list-group-item"><a style="text-decoration: none;"
+                                        href="{{ route('promos.index') }}">Promos</a></li>
+                                <li class="list-group-item"><a style="text-decoration: none;"
+                                        href="{{ route('prizes.index') }}">Prizes</a></li>
+                                <li class="list-group-item"><a style="text-decoration: none;"
+                                        href="{{ route('validations.index') }}">Validations</a></li>
+                                <li class="list-group-item"><a style="text-decoration: none;"
+                                        href="{{ route('entries.index') }}">Entries</a></li>
+                                <li class="list-group-item"><a style="text-decoration: none;"
+                                        href="{{ route('raffle_picks.index') }}">Raffles</a></li>
                             </ul>
                         </div>
                     </div>

@@ -1367,6 +1367,61 @@
                 /* margin: 20px; */
             }
         }
+
+        /* The modal overlay that covers the entire screen */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Semi-transparent background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        /* The modal content box */
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Modal content text */
+        .modal-text {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Close button */
+        .close-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .close-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Media query for mobile responsiveness */
+        @media (max-width: 600px) {
+            .modal-content {
+                width: 90%;
+            }
+        }
     </style>
     <link rel="icon"
         href="https://purebloom.ph/wp-content/uploads/2024/09/cropped-cropped-Vector-Smart-Object-32x32.png"
@@ -1466,92 +1521,94 @@
                             {{-- <img src="https://via.placeholder.com/400x200" alt="Card Image"> --}}
                             <div class="card-content">
                                 <h2 class="card-title">Raffle Draw</h2>
-                                <form class="horizontal-form" method="POST" action="{{ route('raffle_picks.store', ['promo' => $promo?->id]) }}">
+                                <form class="horizontal-form" method="POST"
+                                    action="{{ route('raffle_picks.store', ['promo' => $promo?->id]) }}">
                                     @csrf
-                                @if (session('error'))
-                                    <div class="alert alert-danger">
-                                        {{ session('error') }}
-                                    </div>
-                                @endif
+                                    @if (session('error'))
+                                        <div class="alert alert-danger">
+                                            {{ session('error') }}
+                                        </div>
+                                    @endif
 
-                                <!-- Promo Details Section -->
-{{--                                <div class="row mb-3">--}}
-{{--                                    <label for="promo-name"--}}
-{{--                                        class="col-md-4 col-form-label text-md-end">{{ __('Prize Code') }}</label>--}}
-{{--                                    <div class="col-md-6">--}}
-{{--                                        <input id="promo-name" type="text" class="form-control"--}}
-{{--                                            value="{{ $prize?->code }}" readonly>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
+                                    <!-- Promo Details Section -->
+                                    {{--                                <div class="row mb-3"> --}}
+                                    {{--                                    <label for="promo-name" --}}
+                                    {{--                                        class="col-md-4 col-form-label text-md-end">{{ __('Prize Code') }}</label> --}}
+                                    {{--                                    <div class="col-md-6"> --}}
+                                    {{--                                        <input id="promo-name" type="text" class="form-control" --}}
+                                    {{--                                            value="{{ $prize?->code }}" readonly> --}}
+                                    {{--                                    </div> --}}
+                                    {{--                                </div> --}}
 
-{{--                                <div class="row mb-3">--}}
-{{--                                    <label for="promo-description"--}}
-{{--                                        class="col-md-4 col-form-label text-md-end">{{ __('Prize Description') }}</label>--}}
-{{--                                    <div class="col-md-6">--}}
-{{--                                        <textarea id="promo-description" class="form-control" rows="3" readonly>{{ $prize?->description }}</textarea>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
+                                    {{--                                <div class="row mb-3"> --}}
+                                    {{--                                    <label for="promo-description" --}}
+                                    {{--                                        class="col-md-4 col-form-label text-md-end">{{ __('Prize Description') }}</label> --}}
+                                    {{--                                    <div class="col-md-6"> --}}
+                                    {{--                                        <textarea id="promo-description" class="form-control" rows="3" readonly>{{ $prize?->description }}</textarea> --}}
+                                    {{--                                    </div> --}}
+                                    {{--                                </div> --}}
 
-{{--                                <div class="row mb-3">--}}
-{{--                                    <label for="start-date"--}}
-{{--                                        class="col-md-4 col-form-label text-md-end">{{ __('Quantity') }}</label>--}}
-{{--                                    <div class="col-md-6">--}}
-{{--                                        <input id="start-date" type="text" class="form-control"--}}
-{{--                                            value="{{ $prize?->quantity }}" readonly>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
+                                    {{--                                <div class="row mb-3"> --}}
+                                    {{--                                    <label for="start-date" --}}
+                                    {{--                                        class="col-md-4 col-form-label text-md-end">{{ __('Quantity') }}</label> --}}
+                                    {{--                                    <div class="col-md-6"> --}}
+                                    {{--                                        <input id="start-date" type="text" class="form-control" --}}
+                                    {{--                                            value="{{ $prize?->quantity }}" readonly> --}}
+                                    {{--                                    </div> --}}
+                                    {{--                                </div> --}}
 
-{{--                                <!-- Prize Section -->--}}
-{{--                                <div class="row mb-3">--}}
-{{--                                    <label for="prize"--}}
-{{--                                        class="col-md-4 col-form-label text-md-end">{{ __('Prize') }}</label>--}}
+                                    {{--                                <!-- Prize Section --> --}}
+                                    {{--                                <div class="row mb-3"> --}}
+                                    {{--                                    <label for="prize" --}}
+                                    {{--                                        class="col-md-4 col-form-label text-md-end">{{ __('Prize') }}</label> --}}
 
-{{--                                    <div class="col-md-6">--}}
-{{--                                        <input id="prize" type="text"--}}
-{{--                                            class="form-control @error('prize') is-invalid @enderror" name="prize"--}}
-{{--                                            value="{{ session('pickedPrize')->description ?? '' }}" readonly>--}}
+                                    {{--                                    <div class="col-md-6"> --}}
+                                    {{--                                        <input id="prize" type="text" --}}
+                                    {{--                                            class="form-control @error('prize') is-invalid @enderror" name="prize" --}}
+                                    {{--                                            value="{{ session('pickedPrize')->description ?? '' }}" readonly> --}}
 
-{{--                                        @error('prize')--}}
-{{--                                            <span class="invalid-feedback" role="alert">--}}
-{{--                                                <strong>{{ $message }}</strong>--}}
-{{--                                            </span>--}}
-{{--                                        @enderror--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
+                                    {{--                                        @error('prize') --}}
+                                    {{--                                            <span class="invalid-feedback" role="alert"> --}}
+                                    {{--                                                <strong>{{ $message }}</strong> --}}
+                                    {{--                                            </span> --}}
+                                    {{--                                        @enderror --}}
+                                    {{--                                    </div> --}}
+                                    {{--                                </div> --}}
 
-{{--                                @if (session('success'))--}}
-{{--                                    <div class="alert alert-success">--}}
-{{--                                    </div>--}}
-{{--                                @endif--}}
-                                <br>
-
-                                <!-- Disable the draw button if no available prizes exist -->
-                                <div class="row mb-0">
-                                    <div class="col-md-6 offset-md-4">
-                                        <button type="submit" class="btn btn-primary"
-                                            {{ !$entries ? 'disabled' : '' }}>
-                                            {{ __('Draw') }}
-                                        </button>
-                                    </div>
+                                    {{--                                @if (session('success')) --}}
+                                    {{--                                    <div class="alert alert-success"> --}}
+                                    {{--                                    </div> --}}
+                                    {{--                                @endif --}}
                                     <br>
-{{--                                    <div class="col-md-6 offset-md-4 mt-2">--}}
-{{--                                        <a href="{{ route('raffle_picks.index', compact('promo')) }}"--}}
-{{--                                            style="border: 1px solid #98ddaa; border-radius: 5px; padding: 6px;">--}}
-{{--                                            See winners--}}
-{{--                                        </a>--}}
-{{--                                    </div>--}}
-                                </div>
+
+                                    <!-- Disable the draw button if no available prizes exist -->
+                                    <div class="row mb-0">
+                                        <div class="col-md-6 offset-md-4">
+                                            <button type="submit" class="btn btn-primary"
+                                                {{ !$entries ? 'disabled' : '' }}>
+                                                {{ __('Draw') }}
+                                            </button>
+                                        </div>
+                                        <br>
+                                        {{--                                    <div class="col-md-6 offset-md-4 mt-2"> --}}
+                                        {{--                                        <a href="{{ route('raffle_picks.index', compact('promo')) }}" --}}
+                                        {{--                                            style="border: 1px solid #98ddaa; border-radius: 5px; padding: 6px;"> --}}
+                                        {{--                                            See winners --}}
+                                        {{--                                        </a> --}}
+                                        {{--                                    </div> --}}
+                                    </div>
                                 </form>
-                                @if (session('success') && session('pickedEntry'))
+                                {{-- @if (session('success') && session('pickedEntry'))
                                     <div class="modal">
                                         <div class="modal-content">
-                                            <span class="close" onclick="document.querySelector('.modal').style.display='none'">&times;</span>
+                                            <span class="close"
+                                                onclick="document.querySelector('.modal').style.display='none'">&times;</span>
                                             <h2>Person Picked</h2>
                                             <p>{{ session('pickedEntry->name') }}</p>
                                             {{ session()->forget('pickedEntry') }} <!-- Clear session after display -->
                                         </div>
                                     </div>
-                                @endif
+                                @endif --}}
                             </div>
                         </div>
                     </div>
@@ -1567,6 +1624,19 @@
 
 
             </div><!-- #content -->
+
+            @if (session('success') && session('pickedEntry'))
+                <!-- Modal Structure -->
+                <div class="modal-overlay" id="modal">
+                    <div class="modal-content">
+                        <div class="modal-text">Person Picked</div>
+                        <br>
+                        <p>{{ session('pickedEntry->name') }}</p>
+                        {{ session()->forget('pickedEntry') }} <!-- Clear session after display -->
+                        <button class="close-button" onclick="closeModal()">Close</button>
+                    </div>
+                </div>
+            @endif
 
             <footer id="colophon" class="site-footer">
                 <div class="wrap">
@@ -1823,6 +1893,15 @@
                 "featuredImage": "https:\/\/purebloom.ph\/wp-content\/uploads\/2024\/09\/lotus-1024x1024.jpg"
             }
         };
+    </script>
+    <script>
+        // Function to close the modal
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Optional: To make sure the modal stays open if you click outside, 
+        // we will not add any click handler on the overlay.
     </script>
     <script src="https://purebloom.ph/wp-content/plugins/elementor/assets/js/frontend.min.js?ver=3.24.4"
         id="elementor-frontend-js"></script>
