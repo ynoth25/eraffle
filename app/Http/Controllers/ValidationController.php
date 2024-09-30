@@ -44,7 +44,11 @@ class ValidationController extends Controller
      */
     public function store(Request $request)
     {
-        $promo = Promo::findOrFail($request->query('promo'));
+        $promo = Promo::find($request->query('promo'));
+
+        if (!$promo) {
+            return redirect()->back()->with('error', 'There is no open promo at the moment.');
+        }
 
         $validator = Validator::make($request->all(), [
             'serial_number' => 'required_without:file|unique:valid_sachets,serial_number|max:255',
