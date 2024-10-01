@@ -1,3 +1,82 @@
+{{-- @extends('layouts.layout')
+
+@section('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">{{ __('Register') }}</div>
+
+                <div class="card-body">
+                    <form method="POST" action="{{ route('register') }}">
+                        @csrf
+
+                        <div class="row mb-3">
+                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+
+                                @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                            </div>
+                        </div>
+
+                        <div class="row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    {{ __('Register') }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection --}}
+
+
 <!DOCTYPE html>
 <html lang="en-US" class="no-js no-svg">
 
@@ -1163,7 +1242,7 @@
         .container {
             display: flex;
             flex-wrap: wrap;
-            max-width: 1400px;
+            max-width: 800px;
             margin: 20px auto;
             padding: 10px;
             /* border: 1px solid #ccc; */
@@ -1202,6 +1281,11 @@
             overflow: hidden;
             transition: transform 0.3s ease;
         }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
         .card img {
             width: 100%;
             height: auto;
@@ -1271,135 +1355,6 @@
             flex: 1 1 100%;
             display: flex;
             justify-content: center;
-        }
-
-        /* table */
-        .table-container {
-            width: 100%;
-            max-width: 1200px;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        thead {
-            /* background-color: #e2e2e2; */
-            color: rgb(31, 30, 30);
-        }
-
-        thead th {
-            padding: 15px;
-            text-align: left;
-        }
-
-        tbody tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        tbody td {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        td {
-            word-wrap: break-word;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-
-            table,
-            thead,
-            tbody,
-            th,
-            td,
-            tr {
-                display: block;
-            }
-
-            thead {
-                display: none;
-            }
-
-            tbody tr {
-                margin-bottom: 15px;
-                border-bottom: 2px solid #ddd;
-            }
-
-            tbody td {
-                display: flex;
-                justify-content: space-between;
-                padding: 10px;
-            }
-
-            tbody td::before {
-                content: attr(data-label);
-                font-weight: bold;
-                text-transform: uppercase;
-                flex-basis: 100px;
-            }
-        }
-
-        /* custom logout CSS */
-        .button-3 {
-            appearance: none;
-            background-color: #2ea44f;
-            border: 1px solid rgba(27, 31, 35, .15);
-            border-radius: 6px;
-            box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
-            box-sizing: border-box;
-            color: #fff;
-            cursor: pointer;
-            display: inline-block;
-            font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-            font-size: 14px;
-            font-weight: 600;
-            line-height: 20px;
-            padding: 6px 16px;
-            position: relative;
-            text-align: center;
-            text-decoration: none;
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: manipulation;
-            vertical-align: middle;
-            white-space: nowrap;
-        }
-
-        .button-3:focus:not(:focus-visible):not(.focus-visible) {
-            box-shadow: none;
-            outline: none;
-        }
-
-        .button-3:hover {
-            background-color: #2c974b;
-        }
-
-        .button-3:focus {
-            box-shadow: rgba(46, 164, 79, .4) 0 0 0 3px;
-            outline: none;
-        }
-
-        .button-3:disabled {
-            background-color: #94d3a2;
-            border-color: rgba(27, 31, 35, .1);
-            color: rgba(255, 255, 255, .8);
-            cursor: default;
-        }
-
-        .button-3:active {
-            background-color: #298e46;
-            box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
         }
 
         /* Responsive Styles */
@@ -1509,52 +1464,88 @@
                 alt="" decoding="async" sizes="100vw" /></div> --}}
         <!-- .single-featured-image-header -->
         <div class="site-content-contain">
-            <div id="content" class="site-content" style="padding: 0.5em 0 0;">
+            <div id="content" class="site-content">
                 <div class="container">
                     <div class="main-content">
-                        <div style="text-align: right; width: 100%; max-width: 1200px;">
-                            <!-- HTML !-->
-                            @include('layouts.navigation')
-                            <br>
-                            <p>{{$entries}}</p>
-                        </div>
-                        <div class="table-container">
-                            <table class="responsive-table">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Address</th>
-                                        <th>Serial Number</th>
-                                        <th>Status</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($entries as $entry)
-                                        <tr>
-                                            <td>{{ $entry->name }}</td>
-                                            <td>{{ $entry->email }}</td>
-                                            <td>{{ $entry->phone }}</td>
-                                            <td>{{ $entry->address }}</td>
-                                            <td>{{ $entry->serial_number }}</td>
-                                            <td>{{ $entry->status }}</td>
-                                            <td>
-                                                <a href="{{ route('entries.show', ['entry' => $entry->id]) }}">
-                                                    View
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="5">No entries found.</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
+                        <div class="card">
+                            {{-- <img src="https://via.placeholder.com/400x200" alt="Card Image"> --}}
+                            <div class="card-content">
+                                <h2 class="card-title">Register</h2>
+                                <form action="{{route('users.create')}}" method="POST">
+                                    @csrf
+                                    <div class="row mb-3">
+                                        <label for="name"
+                                            class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
+                                        <div class="col-md-6">
+                                            <input id="name" type="text"
+                                                class="form-control @error('name') is-invalid @enderror"
+                                                name="name" value="{{ old('name') }}" required
+                                                autocomplete="name" autofocus>
+
+                                            @error('name')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row mb-3">
+                                        <label for="email"
+                                            class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+
+                                        <div class="col-md-6">
+                                            <input id="email" type="email"
+                                                class="form-control @error('email') is-invalid @enderror"
+                                                name="email" value="{{ old('email') }}" required
+                                                autocomplete="email">
+
+                                            @error('email')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row mb-3">
+                                        <label for="password"
+                                            class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+
+                                        <div class="col-md-6">
+                                            <input id="password" type="password"
+                                                class="form-control @error('password') is-invalid @enderror"
+                                                name="password" required autocomplete="new-password">
+
+                                            @error('password')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row mb-3">
+                                        <label for="password-confirm"
+                                            class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
+
+                                        <div class="col-md-6">
+                                            <input id="password-confirm" type="password" class="form-control"
+                                                name="password_confirmation" required autocomplete="new-password">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row mb-0">
+                                        <div class="col-md-6 offset-md-4">
+                                            <button type="submit" class="btn btn-primary">
+                                                {{ __('Register') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="wrap">
@@ -1568,68 +1559,7 @@
 
             </div><!-- #content -->
 
-            <footer id="colophon" class="site-footer">
-                <div class="wrap">
-                    <aside class="widget-area" aria-label="Footer">
-                        <div class="widget-column footer-widget-1">
-                            <section id="text-8" class="widget widget_text">
-                                <h2 class="widget-title">Find Us</h2>
-                                <div class="textwidget">
-                                    <p><strong>Address</strong><br />
-                                        3rd Flr., WDG Marketing Center, South Triangle, Quezon Ave., Quezon City</p>
-                                    <p><strong>Hours</strong><br />
-                                        Monday–Friday: 9:00AM–5:00PM</p>
-                                    <p><strong>Email</strong></p>
-                                    <p>purebloom24@gmail.com</p>
-                                </div>
-                            </section>
-                            <section id="simple-social-icons-3" class="widget simple-social-icons">
-                                <h2 class="widget-title">Social Media</h2>
-                                <ul class="alignleft">
-                                    <li class="ssi-email"><a
-                                            href="mailto:&#112;&#117;r&#101;&#098;&#108;&#111;&#111;m&#050;4&#064;gmai&#108;.c&#111;&#109;"><svg
-                                                role="img" class="social-email" aria-labelledby="social-email-3">
-                                                <title id="social-email-3">Email</title>
-                                                <use
-                                                    xlink:href="https://purebloom.ph/wp-content/plugins/simple-social-icons/symbol-defs.svg#social-email">
-                                                </use>
-                                            </svg></a></li>
-                                    <li class="ssi-facebook"><a href="https://www.facebook.com/purebloom24"><svg
-                                                role="img" class="social-facebook"
-                                                aria-labelledby="social-facebook-3">
-                                                <title id="social-facebook-3">Facebook</title>
-                                                <use
-                                                    xlink:href="https://purebloom.ph/wp-content/plugins/simple-social-icons/symbol-defs.svg#social-facebook">
-                                                </use>
-                                            </svg></a></li>
-                                    <li class="ssi-tiktok"><a
-                                            href="https://www.tiktok.com/@purebloomcorp?fbclid=IwY2xjawFfxoxleHRuA2FlbQIxMAABHRQhtYxsn_HfZ_J5NoJNKR0FBW3t0d1RQuPKJFCp6kh0od-2zRhhdYfpnQ_aem_d8eyRvTSpAlii_DXF2fcVQ"><svg
-                                                role="img" class="social-tiktok"
-                                                aria-labelledby="social-tiktok-3">
-                                                <title id="social-tiktok-3">TikTok</title>
-                                                <use
-                                                    xlink:href="https://purebloom.ph/wp-content/plugins/simple-social-icons/symbol-defs.svg#social-tiktok">
-                                                </use>
-                                            </svg></a></li>
-                                </ul>
-                            </section>
-                        </div>
-                        <div class="widget-column footer-widget-2">
-                            <section id="block-11" class="widget widget_block"><iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3860.2826135547184!2d121.02873197544184!3d14.639892276112777!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397b645b380e535%3A0x81247eccd6f695e!2sWDG%20Marketing%20Center!5e0!3m2!1sen!2sph!4v1727188369822!5m2!1sen!2sph"
-                                    width="600" height="450" style="border:0;" allowfullscreen=""
-                                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></section>
-                        </div>
-                    </aside><!-- .widget-area -->
 
-                    <div class="site-info">
-
-                        <!--	<a href="https://wordpress.org/" class="imprint">
-  Proudly powered by WordPress	</a>
--->
-                    </div><!-- .site-info -->
-                </div><!-- .wrap -->
-            </footer><!-- #colophon -->
         </div><!-- .site-content-contain -->
     </div><!-- #page -->
     <style type="text/css" media="screen">

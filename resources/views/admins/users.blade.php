@@ -1,3 +1,59 @@
+{{-- @extends('layouts.app')
+
+@section('content')
+    <div class="card">
+        <div class="card-header">{{ __('Statistics Overview') }}</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card text-white bg-primary mb-3">
+                        <div class="card-header">Total Promos</div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $totalPromos }}</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-white bg-success mb-3">
+                        <div class="card-header">Total Prizes</div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $totalPrizes }}</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-white bg-warning mb-3">
+                        <div class="card-header">Total Entries</div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $totalEntries }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card text-white bg-info mb-3">
+                        <div class="card-header">Total Raffle Picks</div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $totalRafflePicks }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card text-white bg-info mb-3">
+                        <div class="card-header">Total Raffle Winners</div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $winningRafflePicks }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection --}}
+
 <!DOCTYPE html>
 <html lang="en-US" class="no-js no-svg">
 
@@ -1163,7 +1219,7 @@
         .container {
             display: flex;
             flex-wrap: wrap;
-            max-width: 1400px;
+            max-width: 800px;
             margin: 20px auto;
             padding: 10px;
             /* border: 1px solid #ccc; */
@@ -1192,231 +1248,94 @@
                 flex: 1;
             }
         }
-
-        .card {
-            /* width: 400px; */
-            width: 100%;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-        .card img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-        }
-
-        .card-content {
-            padding: 20px;
-        }
-
-        .card-title {
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .card-text {
-            font-size: 16px;
-            line-height: 1.5;
-            margin-bottom: 20px;
-            color: #555;
-        }
-
-        .card-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .card-btn:hover {
-            background-color: #0056b3;
-        }
-
-        /* form styles */
-
-        .horizontal-form {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: space-between;
-        }
-
-        .form-group {
-            flex: 1 1 calc(50% - 20px);
-            /* Two items per row */
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group label {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .form-group input {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .submit {
-            flex: 1 1 100%;
-            display: flex;
-            justify-content: center;
-        }
-
-        /* table */
         .table-container {
-            width: 100%;
-            max-width: 1200px;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    width: 100%;
+    overflow-x: auto; /* Makes the table scrollable on small screens */
+    margin: 20px 0;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
 
-        thead {
-            /* background-color: #e2e2e2; */
-            color: rgb(31, 30, 30);
-        }
+thead {
+    /* background-color: #333; */
+    color: #000000;
+}
 
-        thead th {
-            padding: 15px;
-            text-align: left;
-        }
+th, td {
+    padding: 10px;
+    text-align: left;
+}
 
-        tbody tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
+th {
+    text-transform: uppercase;
+    font-size: 14px;
+}
 
-        tbody td {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-        }
+tbody tr {
+    border-bottom: 1px solid #ddd;
+}
 
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
+tbody tr:hover {
+    background-color: #f2f2f2;
+}
 
-        td {
-            word-wrap: break-word;
-        }
+.action-btn {
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: none;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 3px;
+    cursor: pointer;
+}
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
+.action-btn.edit {
+    background-color: #28a745;
+}
 
-            table,
-            thead,
-            tbody,
-            th,
-            td,
-            tr {
-                display: block;
-            }
+.action-btn.delete {
+    background-color: #dc3545;
+}
 
-            thead {
-                display: none;
-            }
+.action-btn.update-password {
+    background-color: #007bff;
+}
 
-            tbody tr {
-                margin-bottom: 15px;
-                border-bottom: 2px solid #ddd;
-            }
+/* Responsive Styles */
+@media (max-width: 600px) {
+    thead {
+        display: none; /* Hides the table headers */
+    }
 
-            tbody td {
-                display: flex;
-                justify-content: space-between;
-                padding: 10px;
-            }
+    tbody tr {
+        display: block;
+        margin-bottom: 15px;
+    }
 
-            tbody td::before {
-                content: attr(data-label);
-                font-weight: bold;
-                text-transform: uppercase;
-                flex-basis: 100px;
-            }
-        }
+    tbody td {
+        display: block;
+        padding: 10px;
+        text-align: right;
+        border-bottom: 1px solid #ddd;
+    }
 
-        /* custom logout CSS */
-        .button-3 {
-            appearance: none;
-            background-color: #2ea44f;
-            border: 1px solid rgba(27, 31, 35, .15);
-            border-radius: 6px;
-            box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
-            box-sizing: border-box;
-            color: #fff;
-            cursor: pointer;
-            display: inline-block;
-            font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-            font-size: 14px;
-            font-weight: 600;
-            line-height: 20px;
-            padding: 6px 16px;
-            position: relative;
-            text-align: center;
-            text-decoration: none;
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: manipulation;
-            vertical-align: middle;
-            white-space: nowrap;
-        }
+    tbody td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
 
-        .button-3:focus:not(:focus-visible):not(.focus-visible) {
-            box-shadow: none;
-            outline: none;
-        }
+    .action-btn {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+}
 
-        .button-3:hover {
-            background-color: #2c974b;
-        }
-
-        .button-3:focus {
-            box-shadow: rgba(46, 164, 79, .4) 0 0 0 3px;
-            outline: none;
-        }
-
-        .button-3:disabled {
-            background-color: #94d3a2;
-            border-color: rgba(27, 31, 35, .1);
-            color: rgba(255, 255, 255, .8);
-            cursor: default;
-        }
-
-        .button-3:active {
-            background-color: #298e46;
-            box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .form-group {
-                flex: 1 1 100%;
-                /* Stack the items on smaller screens */
-            }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .card {
-                width: 100%;
-                /* margin: 20px; */
-            }
-        }
     </style>
     <link rel="icon"
         href="https://purebloom.ph/wp-content/uploads/2024/09/cropped-cropped-Vector-Smart-Object-32x32.png"
@@ -1499,7 +1418,9 @@
                         </div>
                     </nav><!-- #site-navigation -->
                 </div><!-- .wrap -->
-            </div><!-- .navigation-top -->
+            </div>
+            <!-- .navigation-top -->
+
 
         </header><!-- #masthead -->
 
@@ -1509,52 +1430,36 @@
                 alt="" decoding="async" sizes="100vw" /></div> --}}
         <!-- .single-featured-image-header -->
         <div class="site-content-contain">
-            <div id="content" class="site-content" style="padding: 0.5em 0 0;">
+            <div id="content" class="site-content" style="padding: 0%;">
                 <div class="container">
                     <div class="main-content">
-                        <div style="text-align: right; width: 100%; max-width: 1200px;">
-                            <!-- HTML !-->
-                            @include('layouts.navigation')
-                            <br>
-                            <p>{{$entries}}</p>
-                        </div>
+                        @include('layouts.navigation')
+                        <br>
+                        <a href="{{route('users.register')}}" style="border: 1px solid black; border-radius: 8px; padding: 5px; ">Register New  User</a>
                         <div class="table-container">
-                            <table class="responsive-table">
+                            <table>
                                 <thead>
                                     <tr>
                                         <th>Name</th>
                                         <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Address</th>
-                                        <th>Serial Number</th>
-                                        <th>Status</th>
-                                        <th></th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($entries as $entry)
-                                        <tr>
-                                            <td>{{ $entry->name }}</td>
-                                            <td>{{ $entry->email }}</td>
-                                            <td>{{ $entry->phone }}</td>
-                                            <td>{{ $entry->address }}</td>
-                                            <td>{{ $entry->serial_number }}</td>
-                                            <td>{{ $entry->status }}</td>
-                                            <td>
-                                                <a href="{{ route('entries.show', ['entry' => $entry->id]) }}">
-                                                    View
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="5">No entries found.</td>
-                                        </tr>
-                                    @endforelse
+                                    @foreach ($users as $user)
+                                    <tr>
+                                        <td>{{$user->name}}</td>
+                                        <td>{{$user->email}}</td>
+                                        <td>
+                                            <a href="{{route('users.edit', $user->id)}}" class="action-btn edit" >Edit</a>
+                                            <a href="{{route('users.delete', $user->id)}}" class="action-btn delete">Delete</a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    <!-- Add more rows as needed -->
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
                 <div class="wrap">
@@ -1568,68 +1473,7 @@
 
             </div><!-- #content -->
 
-            <footer id="colophon" class="site-footer">
-                <div class="wrap">
-                    <aside class="widget-area" aria-label="Footer">
-                        <div class="widget-column footer-widget-1">
-                            <section id="text-8" class="widget widget_text">
-                                <h2 class="widget-title">Find Us</h2>
-                                <div class="textwidget">
-                                    <p><strong>Address</strong><br />
-                                        3rd Flr., WDG Marketing Center, South Triangle, Quezon Ave., Quezon City</p>
-                                    <p><strong>Hours</strong><br />
-                                        Monday–Friday: 9:00AM–5:00PM</p>
-                                    <p><strong>Email</strong></p>
-                                    <p>purebloom24@gmail.com</p>
-                                </div>
-                            </section>
-                            <section id="simple-social-icons-3" class="widget simple-social-icons">
-                                <h2 class="widget-title">Social Media</h2>
-                                <ul class="alignleft">
-                                    <li class="ssi-email"><a
-                                            href="mailto:&#112;&#117;r&#101;&#098;&#108;&#111;&#111;m&#050;4&#064;gmai&#108;.c&#111;&#109;"><svg
-                                                role="img" class="social-email" aria-labelledby="social-email-3">
-                                                <title id="social-email-3">Email</title>
-                                                <use
-                                                    xlink:href="https://purebloom.ph/wp-content/plugins/simple-social-icons/symbol-defs.svg#social-email">
-                                                </use>
-                                            </svg></a></li>
-                                    <li class="ssi-facebook"><a href="https://www.facebook.com/purebloom24"><svg
-                                                role="img" class="social-facebook"
-                                                aria-labelledby="social-facebook-3">
-                                                <title id="social-facebook-3">Facebook</title>
-                                                <use
-                                                    xlink:href="https://purebloom.ph/wp-content/plugins/simple-social-icons/symbol-defs.svg#social-facebook">
-                                                </use>
-                                            </svg></a></li>
-                                    <li class="ssi-tiktok"><a
-                                            href="https://www.tiktok.com/@purebloomcorp?fbclid=IwY2xjawFfxoxleHRuA2FlbQIxMAABHRQhtYxsn_HfZ_J5NoJNKR0FBW3t0d1RQuPKJFCp6kh0od-2zRhhdYfpnQ_aem_d8eyRvTSpAlii_DXF2fcVQ"><svg
-                                                role="img" class="social-tiktok"
-                                                aria-labelledby="social-tiktok-3">
-                                                <title id="social-tiktok-3">TikTok</title>
-                                                <use
-                                                    xlink:href="https://purebloom.ph/wp-content/plugins/simple-social-icons/symbol-defs.svg#social-tiktok">
-                                                </use>
-                                            </svg></a></li>
-                                </ul>
-                            </section>
-                        </div>
-                        <div class="widget-column footer-widget-2">
-                            <section id="block-11" class="widget widget_block"><iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3860.2826135547184!2d121.02873197544184!3d14.639892276112777!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397b645b380e535%3A0x81247eccd6f695e!2sWDG%20Marketing%20Center!5e0!3m2!1sen!2sph!4v1727188369822!5m2!1sen!2sph"
-                                    width="600" height="450" style="border:0;" allowfullscreen=""
-                                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></section>
-                        </div>
-                    </aside><!-- .widget-area -->
 
-                    <div class="site-info">
-
-                        <!--	<a href="https://wordpress.org/" class="imprint">
-  Proudly powered by WordPress	</a>
--->
-                    </div><!-- .site-info -->
-                </div><!-- .wrap -->
-            </footer><!-- #colophon -->
         </div><!-- .site-content-contain -->
     </div><!-- #page -->
     <style type="text/css" media="screen">

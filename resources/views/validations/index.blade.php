@@ -1413,9 +1413,6 @@
             transition: transform 0.3s ease;
         }
 
-        .card:hover {
-            transform: translateY(-10px);
-        }
 
         .card img {
             width: 100%;
@@ -1750,7 +1747,8 @@
                 <div class="container">
                     <div class="main-content">
                         <div style="text-align: right; width: 100%; max-width: 1200px;">
-                            @include('layouts.admin-panel')
+                            @include('layouts.navigation')
+                            <br>
                             @if (session('status'))
                                 <div class="alert alert-success" role="alert">
                                     {{ session('status') }}

@@ -1316,10 +1316,6 @@
             transition: transform 0.3s ease;
         }
 
-        .card:hover {
-            transform: translateY(-10px);
-        }
-
         .card img {
             width: 100%;
             height: auto;
@@ -1486,8 +1482,10 @@
                                         href="https://purebloom.ph/blog/">Activities</a></li>
                             </ul>
                         </div>
-                    </nav><!-- #site-navigation -->
-                </div><!-- .wrap -->
+                    </nav>
+                    <!-- #site-navigation -->
+                </div>
+                <!-- .wrap -->
             </div><!-- .navigation-top -->
 
         </header><!-- #masthead -->
@@ -1498,9 +1496,11 @@
                 alt="" decoding="async" sizes="100vw" /></div> --}}
         <!-- .single-featured-image-header -->
         <div class="site-content-contain">
-            <div id="content" class="site-content">
+            <div id="content" class="site-content" style="padding: 0%">
                 <div class="container">
                     <div class="main-content">
+                        @include('layouts.navigation')
+                        <br>
                         <div class="card">
                             {{-- <img src="https://via.placeholder.com/400x200" alt="Card Image"> --}}
                             <div class="card-content">

@@ -1163,7 +1163,7 @@
         .container {
             display: flex;
             flex-wrap: wrap;
-            max-width: 1400px;
+            max-width: 800px;
             margin: 20px auto;
             padding: 10px;
             /* border: 1px solid #ccc; */
@@ -1202,6 +1202,7 @@
             overflow: hidden;
             transition: transform 0.3s ease;
         }
+
         .card img {
             width: 100%;
             height: auto;
@@ -1271,135 +1272,6 @@
             flex: 1 1 100%;
             display: flex;
             justify-content: center;
-        }
-
-        /* table */
-        .table-container {
-            width: 100%;
-            max-width: 1200px;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        thead {
-            /* background-color: #e2e2e2; */
-            color: rgb(31, 30, 30);
-        }
-
-        thead th {
-            padding: 15px;
-            text-align: left;
-        }
-
-        tbody tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        tbody td {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        td {
-            word-wrap: break-word;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-
-            table,
-            thead,
-            tbody,
-            th,
-            td,
-            tr {
-                display: block;
-            }
-
-            thead {
-                display: none;
-            }
-
-            tbody tr {
-                margin-bottom: 15px;
-                border-bottom: 2px solid #ddd;
-            }
-
-            tbody td {
-                display: flex;
-                justify-content: space-between;
-                padding: 10px;
-            }
-
-            tbody td::before {
-                content: attr(data-label);
-                font-weight: bold;
-                text-transform: uppercase;
-                flex-basis: 100px;
-            }
-        }
-
-        /* custom logout CSS */
-        .button-3 {
-            appearance: none;
-            background-color: #2ea44f;
-            border: 1px solid rgba(27, 31, 35, .15);
-            border-radius: 6px;
-            box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
-            box-sizing: border-box;
-            color: #fff;
-            cursor: pointer;
-            display: inline-block;
-            font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-            font-size: 14px;
-            font-weight: 600;
-            line-height: 20px;
-            padding: 6px 16px;
-            position: relative;
-            text-align: center;
-            text-decoration: none;
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: manipulation;
-            vertical-align: middle;
-            white-space: nowrap;
-        }
-
-        .button-3:focus:not(:focus-visible):not(.focus-visible) {
-            box-shadow: none;
-            outline: none;
-        }
-
-        .button-3:hover {
-            background-color: #2c974b;
-        }
-
-        .button-3:focus {
-            box-shadow: rgba(46, 164, 79, .4) 0 0 0 3px;
-            outline: none;
-        }
-
-        .button-3:disabled {
-            background-color: #94d3a2;
-            border-color: rgba(27, 31, 35, .1);
-            color: rgba(255, 255, 255, .8);
-            cursor: default;
-        }
-
-        .button-3:active {
-            background-color: #298e46;
-            box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
         }
 
         /* Responsive Styles */
@@ -1509,52 +1381,33 @@
                 alt="" decoding="async" sizes="100vw" /></div> --}}
         <!-- .single-featured-image-header -->
         <div class="site-content-contain">
-            <div id="content" class="site-content" style="padding: 0.5em 0 0;">
+            <div id="content" class="site-content" style="padding: 0%;">
                 <div class="container">
                     <div class="main-content">
-                        <div style="text-align: right; width: 100%; max-width: 1200px;">
-                            <!-- HTML !-->
-                            @include('layouts.navigation')
-                            <br>
-                            <p>{{$entries}}</p>
-                        </div>
-                        <div class="table-container">
-                            <table class="responsive-table">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Address</th>
-                                        <th>Serial Number</th>
-                                        <th>Status</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($entries as $entry)
-                                        <tr>
-                                            <td>{{ $entry->name }}</td>
-                                            <td>{{ $entry->email }}</td>
-                                            <td>{{ $entry->phone }}</td>
-                                            <td>{{ $entry->address }}</td>
-                                            <td>{{ $entry->serial_number }}</td>
-                                            <td>{{ $entry->status }}</td>
-                                            <td>
-                                                <a href="{{ route('entries.show', ['entry' => $entry->id]) }}">
-                                                    View
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="5">No entries found.</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
+                        @include('layouts.navigation')
+                        <br>
+                        <div class="card">
+                            {{-- <img src="https://via.placeholder.com/400x200" alt="Card Image"> --}}
+                            <div class="card-content">
+                                <h2 class="card-title">Edit User</h2>
 
+                                <form action="{{route('users.update', $user[0]['id'])}}" method="POST">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="">Name:</label>
+                                        <input type="text" name="name" value="{{$user[0]['name']}}">
+                                        <br>
+                                        <label for="">Email:</label>
+                                        <input type="email" name="email" value="{{$user[0]['email']}}">
+                                        <br>
+                                        <label for="">Password:&nbsp; <small style="color: #0693e3;">Optional to update the password</small> </label>
+                                        <input type="text" name="password">
+                                        <br>
+                                        <button type="submit">Update</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="wrap">
@@ -1570,6 +1423,8 @@
 
             <footer id="colophon" class="site-footer">
                 <div class="wrap">
+
+
                     <aside class="widget-area" aria-label="Footer">
                         <div class="widget-column footer-widget-1">
                             <section id="text-8" class="widget widget_text">
