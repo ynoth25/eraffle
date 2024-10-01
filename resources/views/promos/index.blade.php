@@ -1163,7 +1163,7 @@
         .container {
             display: flex;
             flex-wrap: wrap;
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 20px auto;
             padding: 10px;
             /* border: 1px solid #ccc; */
@@ -1488,38 +1488,6 @@
 
             </div><!-- .custom-header -->
 
-            <div class="navigation-top">
-                <div class="wrap">
-                    <nav id="site-navigation" class="main-navigation" aria-label="Top Menu">
-                        <button class="menu-toggle" aria-controls="top-menu" aria-expanded="false">
-                            <svg class="icon icon-bars" aria-hidden="true" role="img">
-                                <use href="#icon-bars" xlink:href="#icon-bars"></use>
-                            </svg><svg class="icon icon-close" aria-hidden="true" role="img">
-                                <use href="#icon-close" xlink:href="#icon-close"></use>
-                            </svg>Menu </button>
-
-                        <div class="menu-top-menu-container">
-                            <ul id="top-menu" class="menu">
-                                <li id="menu-item-38"
-                                    class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-38">
-                                    <a href="https://purebloom.ph/">Home</a>
-                                </li>
-                                <li id="menu-item-124"
-                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-41">
-                                    <a href="https://purebloom.ph/about-us/" aria-current="page">About Us</a>
-                                </li>
-                                <li id="menu-item-41"
-                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-41"><a
-                                        href="https://purebloom.ph/contact/">Contact Us</a></li>
-                                <li id="menu-item-40"
-                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-40"><a
-                                        href="https://purebloom.ph/blog/">Activities</a></li>
-                            </ul>
-                        </div>
-                    </nav><!-- #site-navigation -->
-                </div><!-- .wrap -->
-            </div><!-- .navigation-top -->
-
         </header><!-- #masthead -->
 
         {{-- <div class="single-featured-image-header"><img width="2000" height="1200"
@@ -1530,15 +1498,9 @@
         <div class="site-content-contain">
             <div id="content" class="site-content" style="padding: 0.5em 0 0;">
                 <div class="container">
+                    @include('layouts.navigation')
+                    <br>
                     <div class="main-content">
-                        <div style="text-align: right; width: 100%; max-width: 1200px;">
-                            @include('layouts.admin-panel')
-                            <!-- HTML !-->
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                            <br>
-                        </div>
                         <div class="table-container">
                             @if ('success')
                                 <div class="alert alert-success" role="alert">

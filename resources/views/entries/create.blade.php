@@ -1293,6 +1293,43 @@
                 /* margin: 20px; */
             }
         }
+
+        /* Add your alert styles here */
+        .alert {
+            padding: 20px;
+            background-color: #f44336;
+            color: white;
+            opacity: 1;
+            transition: opacity 0.6s;
+            margin-bottom: 15px;
+        }
+
+        .alert.success {
+            background-color: #04AA6D;
+        }
+
+        .alert.info {
+            background-color: #2196F3;
+        }
+
+        .alert.warning {
+            background-color: #ff9800;
+        }
+
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .closebtn:hover {
+            color: black;
+        }
     </style>
     <link rel="icon"
         href="https://purebloom.ph/wp-content/uploads/2024/09/cropped-cropped-Vector-Smart-Object-32x32.png"
@@ -1388,6 +1425,12 @@
             <div id="content" class="site-content">
                 <div class="container">
                     <div class="main-content">
+                        @if (session('success'))
+                            <div class="alert success">
+                                <span class="closebtn">&times;</span>
+                                <strong>Success!</strong> {{ session('success') }}
+                            </div>
+                        @endif
                         <div class="card">
                             {{-- <img src="https://via.placeholder.com/400x200" alt="Card Image"> --}}
                             <div class="card-content">
@@ -1455,14 +1498,19 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <input type="hidden" id="promo_id" name="promo_id"
-                                           value="{{ $promo?->id }}">
+                                    <br>
+                                    <br>
+                                    <div>
 
-                                    @if (session('success'))
+                                        <input type="hidden" id="promo_id" name="promo_id"
+                                            value="{{ $promo?->id }}">
+                                    </div>
+
+                                    {{-- @if (session('success'))
                                         <div class="alert alert-success">
                                             {{ session('success') }}
                                         </div>
-                                    @endif
+                                    @endif --}}
 
                                     @if (session('error'))
                                         <div class="alert alert-danger">
@@ -1664,6 +1712,16 @@
         ];
         events.forEach((event) => {
             document.addEventListener(event, lazyloadRunObserver);
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const closeBtns = document.querySelectorAll('.close-btn');
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.parentElement.style.display = 'none';
+                });
+            });
         });
     </script>
     <script src="https://purebloom.ph/wp-content/themes/twentyseventeen/assets/js/jquery.scrollTo.js?ver=2.1.3"

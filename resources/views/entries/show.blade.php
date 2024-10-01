@@ -1369,9 +1369,6 @@
             transition: transform 0.3s ease;
         }
 
-        .card:hover {
-            transform: translateY(-10px);
-        }
 
         .card img {
             width: 100%;
@@ -1601,6 +1598,8 @@
                                     </div>
                                 </div>
                                 <br>
+                                <a href="{{ route('entries.index') }}"
+                                    style="border: 1px solid gray; border-radius: 7px; padding: 10px;">Go back</a>
                             </div>
                         </div>
                     </div>

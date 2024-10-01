@@ -1202,11 +1202,6 @@
             overflow: hidden;
             transition: transform 0.3s ease;
         }
-
-        .card:hover {
-            transform: translateY(-10px);
-        }
-
         .card img {
             width: 100%;
             height: auto;
@@ -1422,6 +1417,58 @@
                 /* margin: 20px; */
             }
         }
+
+        .search-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .search-form-inline {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="text"],
+        select {
+            padding: 10px;
+            width: calc(35%);
+            min-width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            flex-grow: 1;
+        }
+
+        .search-button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            min-width: 100px;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .search-form-inline {
+                flex-direction: column;
+            }
+
+            input[type="text"],
+            select,
+            button {
+                width: 100%;
+            }
+        }
     </style>
     <link rel="icon"
         href="https://purebloom.ph/wp-content/uploads/2024/09/cropped-cropped-Vector-Smart-Object-32x32.png"
@@ -1519,15 +1566,28 @@
                     <div class="main-content">
                         <div style="text-align: right; width: 100%; max-width: 1200px;">
                             <!-- HTML !-->
-                            @include('layouts.admin-panel')
-                            {{-- <button class="button-3" role="button"
-                                onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">Logout</button> --}}
-
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
+                            @include('layouts.navigation')
                             <br>
+                            <div class="search-container">
+                                <form class="search-form-inline" method="GET"
+                                    action="{{ route('entries.index') }}">
+                                    <!-- Search Input -->
+                                    <input type="text" id="search" name="search" placeholder="Search...">
+
+                                    <!-- Select Dropdown -->
+                                    <select id="filter" name="promo_id">
+                                        @foreach ($promos as $promo)
+                                            <option value="{{ $promo->id }}">{{ $promo->name }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    <!-- Submit Button -->
+                                    <button type="submit" class="search-button">Search</button>
+                                </form>
+                            </div>
+                            <br>
+                            <br>
+                            <p>{{$entries}}</p>
                         </div>
                         <div class="table-container">
                             <table class="responsive-table">
@@ -1552,7 +1612,8 @@
                                             <td>{{ $entry->serial_number }}</td>
                                             <td>{{ $entry->status }}</td>
                                             <td>
-                                                <a href="{{ route('entries.show', ['entry' => $entry->id]) }}">
+                                                <a href="{{ route('entries.show', ['entry' => $entry->id]) }}"
+                                                    style="padding:7px; border: 1px solid skyblue; border-radius: 5px;">
                                                     View
                                                 </a>
                                             </td>
@@ -1564,8 +1625,8 @@
                                     @endforelse
                                 </tbody>
                             </table>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
                 <div class="wrap">

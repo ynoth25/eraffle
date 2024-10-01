@@ -1,0 +1,1 @@
+[07-Oct-2024 04:40:00 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/hslpslx038ha/public_html/eraffle/vendor/laravel/framework/src/Illuminate/Collections/Collection.php on line 844
