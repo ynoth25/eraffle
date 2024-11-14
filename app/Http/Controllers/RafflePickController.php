@@ -27,7 +27,7 @@ class RafflePickController extends Controller
 
         $rafflePicks = RafflePick::when($promo, function ($query, $promo) {
             // Filter raffle picks by promo ID through the prize relationship
-            return $query->whereHas('prize.promo', function ($query) use ($promo) {
+            return $query->whereHas('entry.promo', function ($query) use ($promo) {
                 $query->where('id', $promo->id);
             });
         })
