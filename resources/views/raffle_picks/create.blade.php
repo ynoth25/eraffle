@@ -1629,9 +1629,9 @@
                 <!-- Modal Structure -->
                 <div class="modal-overlay" id="modal">
                     <div class="modal-content">
-                        <div class="modal-text">Person Picked</div>
+                        <div class="modal-text">Winner</div>
                         <br>
-                        <p>{{ session('pickedEntry->name') }}</p>
+                        <p>{{ session('pickedEntry')['name'] }}</p>
                         {{ session()->forget('pickedEntry') }} <!-- Clear session after display -->
                         <button class="close-button" onclick="closeModal()">Close</button>
                     </div>
@@ -1900,7 +1900,7 @@
             document.getElementById('modal').style.display = 'none';
         }
 
-        // Optional: To make sure the modal stays open if you click outside, 
+        // Optional: To make sure the modal stays open if you click outside,
         // we will not add any click handler on the overlay.
     </script>
     <script src="https://purebloom.ph/wp-content/plugins/elementor/assets/js/frontend.min.js?ver=3.24.4"
