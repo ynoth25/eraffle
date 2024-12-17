@@ -17,16 +17,18 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('Description') }}</label>
+                            <label for="description"
+                                class="col-md-4 col-form-label text-md-end">{{ __('Description') }}</label>
 
                             <div class="col-md-6">
                                 <p id="description" class="form-control-plaintext">{{ $prize->description }}</p>
                             </div>
                         </div>
 
-                        @if($prize->file)
+                        @if ($prize->file)
                             <div class="row mb-3">
-                                <label for="file" class="col-md-4 col-form-label text-md-end">{{ __('Uploaded File') }}</label>
+                                <label for="file"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Uploaded File') }}</label>
 
                                 <div class="col-md-6">
                                     <a href="{{ Storage::url($prize->file) }}" class="btn btn-primary" target="_blank">

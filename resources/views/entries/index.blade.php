@@ -1202,6 +1202,7 @@
             overflow: hidden;
             transition: transform 0.3s ease;
         }
+
         .card img {
             width: 100%;
             height: auto;
@@ -1587,10 +1588,17 @@
                             </div>
                             <br>
                             <br>
-                            <p>{{$entries}}</p>
+
                         </div>
                         <div class="table-container">
-                            <table class="responsive-table">
+
+                            <!--<select name="per_page" class="form-control" style="width: 15px;">-->
+                            <!--    <option value="10" {{ $perPage == 10 ? 'selected' : '' }}>10 per page</option>-->
+                            <!--    <option value="25" {{ $perPage == 25 ? 'selected' : '' }}>25 per page</option>-->
+                            <!--    <option value="50" {{ $perPage == 50 ? 'selected' : '' }}>50 per page</option>-->
+                            <!--</select>-->
+
+                            <table class="table">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
@@ -1599,7 +1607,7 @@
                                         <th>Address</th>
                                         <th>Serial Number</th>
                                         <th>Status</th>
-                                        <th></th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1625,6 +1633,7 @@
                                     @endforelse
                                 </tbody>
                             </table>
+                            {{ $entries->appends(['search' => $search, 'per_page' => $perPage])->links() }}
 
                         </div>
                     </div>

@@ -1158,6 +1158,7 @@
                 background-image: none !important;
             }
         }
+
         .container-navi {
             display: flex;
             flex-wrap: wrap;
@@ -1167,6 +1168,7 @@
             /* border: 1px solid #ccc; */
             background-color: #ffffff;
         }
+
         /* custom css */
         .container {
             display: flex;
@@ -1357,7 +1359,7 @@
                 @include('layouts.navigation')
             </div>
 
- 
+
 
         </header><!-- #masthead -->
 

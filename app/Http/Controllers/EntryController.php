@@ -17,7 +17,7 @@ class EntryController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->input('per_page', 10);
+        $perPage = $request->input('per_page', 10000);
         $search = $request->input('search', '');
 
         // Find the promo based on input or default to the first one with a null end_date

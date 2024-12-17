@@ -33,14 +33,14 @@ class RafflePickController extends Controller
         })
             ->where(function ($query) use ($search) {
                 // Add search functionality for prize and entry details
-//                $query->whereHas('prize', function ($query) use ($search) {
-//                    $query->where('code', 'like', "%{$search}%")
-//                        ->orWhere('description', 'like', "%{$search}%");
-//                })
+                //                $query->whereHas('prize', function ($query) use ($search) {
+                //                    $query->where('code', 'like', "%{$search}%")
+                //                        ->orWhere('description', 'like', "%{$search}%");
+                //                })
                 $query->orWhereHas('entry', function ($query) use ($search) {
-                        $query->where('name', 'like', "%{$search}%")
-                            ->orWhere('email', 'like', "%{$search}%");
-                    });
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
             })
             ->paginate($perPage); // Paginate the result
 
@@ -54,13 +54,13 @@ class RafflePickController extends Controller
     {
         $promo = Promo::whereNull('end_date')->latest()->first();
 
-//        $prize = $promo?->prizes()->where('status', '!=', 'picked')
-//            ->inRandomOrder()->first();
+        //        $prize = $promo?->prizes()->where('status', '!=', 'picked')
+        //            ->inRandomOrder()->first();
         $entries = $promo?->entries()->where('status', '!=', 'picked');
 
-//        if (!$prize) {
-//            session()->flash('error', 'This promo does not have any available prizes.');
-//        }
+        //        if (!$prize) {
+        //            session()->flash('error', 'This promo does not have any available prizes.');
+        //        }
 
         if (!$entries) {
             session()->flash('error', 'This promo does not have any available entries.');
@@ -70,7 +70,7 @@ class RafflePickController extends Controller
             session()->flash('error', 'There is no open promo at the moment.');
         }
 
-        return view('raffle_picks.create', compact( 'promo', 'entries'));
+        return view('raffle_picks.create', compact('promo', 'entries'));
     }
 
     /**
@@ -87,18 +87,18 @@ class RafflePickController extends Controller
                 throw new \Exception('No available entry for this raffle.');
             }
 
-//            // Find a random prize that has not been picked yet
-//            $prize = Prize::where('status', '!=', 'picked')->inRandomOrder()->first();
-//            if (!$prize) {
-//                throw new \Exception('No available prize for this raffle.');
-//            }
+            //            // Find a random prize that has not been picked yet
+            //            $prize = Prize::where('status', '!=', 'picked')->inRandomOrder()->first();
+            //            if (!$prize) {
+            //                throw new \Exception('No available prize for this raffle.');
+            //            }
 
             // Update the entry and prize status to 'picked'
             $entry->status = 'picked';
             $entry->save();
 
-//            $prize->status = 'picked';
-//            $prize->save();
+            //            $prize->status = 'picked';
+            //            $prize->save();
 
             // Create a record for the raffle pick
             RafflePick::create([

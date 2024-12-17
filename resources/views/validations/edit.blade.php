@@ -542,8 +542,7 @@
     <script src="https://purebloom.ph/wp-content/themes/twentyseventeen/assets/js/navigation.js?ver=20210122"
         id="twentyseventeen-navigation-js" defer data-wp-strategy="defer"></script>
     <link rel="https://api.w.org/" href="https://purebloom.ph/wp-json/" />
-    <link rel="alternate" title="JSON" type="application/json"
-        href="https://purebloom.ph/wp-json/wp/v2/pages/118" />
+    <link rel="alternate" title="JSON" type="application/json" href="https://purebloom.ph/wp-json/wp/v2/pages/118" />
     <link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://purebloom.ph/xmlrpc.php?rsd" />
     <meta name="generator" content="WordPress 6.6.2" />
     <link rel="canonical" href="https://purebloom.ph/about-us/" />
@@ -1382,7 +1381,7 @@
                 alt="" decoding="async" sizes="100vw" /></div> --}}
         <!-- .single-featured-image-header -->
         <div class="site-content-contain">
-            <div id="content" class="site-content"  style="padding: 0%;">
+            <div id="content" class="site-content" style="padding: 0%;">
                 <div class="container">
                     <div class="main-content">
                         <div class="card">
@@ -1420,8 +1419,7 @@
                                         <div class="col-md-6">
                                             <input id="status" type="text"
                                                 class="form-control @error('status') is-invalid @enderror"
-                                                name="status"
-                                                value="{{ old('status', $validation->status ?? '') }}">
+                                                name="status" value="{{ old('status', $validation->status ?? '') }}">
 
                                             @error('status')
                                                 <span class="invalid-feedback" role="alert">

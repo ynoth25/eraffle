@@ -41,4 +41,3 @@ Route::middleware('auth')->group(function () {
     // Protected image route
     Route::get('storage/{disk}/{filename}', [ImageController::class, 'show'])->name('storage.show');
 });
-

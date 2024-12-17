@@ -42,14 +42,16 @@ class HomeController extends Controller
 
         return view('home', compact('totalPromos', 'totalRafflePicks', 'winningRafflePicks', 'totalEntries', 'totalPrizes'));
     }
-    public function getUsersList(){
+    public function getUsersList()
+    {
 
         $users = User::all();
 
         return view('admins.users', compact('users'));
     }
 
-    public function editUser(Request $request){
+    public function editUser(Request $request)
+    {
 
         $id = $request->id;
 
@@ -58,47 +60,51 @@ class HomeController extends Controller
         return view('admins.users_edit', compact('user'));
     }
 
-    public function updateUser(Request $request, $id){
+    public function updateUser(Request $request, $id)
+    {
 
         $name = $request->name;
         $email = $request->email;
         $password = Hash::make($request->password);
 
-        if(!is_null($request->password)){
+        if (!is_null($request->password)) {
             $user = User::where('id', $id)->update(
                 [
                     'name' => $name,
                     'email' => $email,
                     'password' => $password,
                 ]
-                );
+            );
             return redirect()->route('users.list');
-        }else{
+        } else {
             $user = User::where('id', $id)->update(
                 [
                     'name' => $name,
                     'email' => $email,
                 ]
-                );
-                return redirect()->route('users.list');
+            );
+            return redirect()->route('users.list');
         }
 
 
         return dd($request->all());
     }
 
-    public function deleteUser($id){
+    public function deleteUser($id)
+    {
         $user = User::find($id);
         $user->delete();
 
         return redirect()->route('users.list')->with('success', 'Users has been deleted.');
     }
 
-    public function register(Request $request){
+    public function register(Request $request)
+    {
         return view('admins.users_create');
     }
 
-    public function createUser(Request $request){
+    public function createUser(Request $request)
+    {
 
         $validate = $request->validate(
             [
@@ -115,6 +121,5 @@ class HomeController extends Controller
         ]);
 
         return redirect()->route('users.list');
-        
     }
 }
