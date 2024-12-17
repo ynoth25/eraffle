@@ -1554,7 +1554,7 @@
                                                     class="btn-link promo-serial">
                                                     Serials
                                                 </a>
-                                                <a href="{{ route('raffle_picks.index', compact('promo')) }}"
+                                                <a href="{{ route('raffle_picks.create', compact('promo')) }}"
                                                     class="btn-link promo-raffle-draw">
                                                     Raffle Draws
                                                 </a>

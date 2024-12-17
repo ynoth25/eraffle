@@ -1612,10 +1612,13 @@
         <div class="site-content-contain">
             <div id="content" class="site-content" style="padding: 0.5em 0 0;">
                 <div class="container">
+
                     <div class="main-content">
 
                         <div style="text-align: right; width: 100%; max-width: 1200px;">
-                            @include('layouts.admin-panel')
+                            @include('layouts.navigation')
+                            <br>
+                            <br>
                             <form method="GET" action="{{ route('raffle_picks.index') }}">
                                 <div class="row mb-3 align-items-center">
                                     <div class="col-md-4">
@@ -1665,9 +1668,11 @@
                                                 </a>
                                             </td>
                                             <td>
-                                                <a href="{{ route('prizes.show', ['prize' => $rafflePick->prize]) }}">
+                                                {{-- <a href="{{ route('prizes.show', ['prize' => $rafflePick->prize]) }}">
+                                                
                                                     {{ $rafflePick->prize->description }}
-                                                </a>
+                                                </a> --}}
+                                                {{ $rafflePick->prize->description ?? 'No Description' }}
                                             </td>
                                             <td>{{ $rafflePick->is_winner == true ? 'true' : 'false' }}</td>
                                             <td>

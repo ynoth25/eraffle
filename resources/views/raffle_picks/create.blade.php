@@ -1277,9 +1277,9 @@
             transition: transform 0.3s ease;
         }
 
-        .card:hover {
+        /* .card:hover {
             transform: translateY(-10px);
-        }
+        } */
 
         .card img {
             width: 100%;
@@ -1514,9 +1514,17 @@
                 alt="" decoding="async" sizes="100vw" /></div> --}}
         <!-- .single-featured-image-header -->
         <div class="site-content-contain">
-            <div id="content" class="site-content">
+            <div id="content" class="site-content" style="padding-top: 50px;">
                 <div class="container">
                     <div class="main-content">
+                        @include('layouts.navigation')
+                        <br>
+                        <a href="{{ route('raffle_picks.index', compact('promo')) }}"
+                            style="padding: 10px; border: 1px solid #00d084; border-radius: 5px;">
+                            See winners
+                        </a>
+                        <br>
+                        <br>
                         <div class="card">
                             {{-- <img src="https://via.placeholder.com/400x200" alt="Card Image"> --}}
                             <div class="card-content">
@@ -1618,6 +1626,7 @@
                     <div id="primary" class="content-area">
                         <main id="main" class="site-main">
                             <!-- #post-118 -->
+
                         </main><!-- #main -->
                     </div><!-- #primary -->
                 </div><!-- .wrap -->

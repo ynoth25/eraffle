@@ -28,4 +28,8 @@ class RafflePick extends Model
     {
         return $this->belongsTo(Entry::class);
     }
+    public function prize()
+    {
+        return $this->belongsTo(Prize::class);
+    }
 }
